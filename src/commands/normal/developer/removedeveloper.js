@@ -14,7 +14,7 @@ module.exports = {
 		const ownProfile = await Developer.findOne({ userid: interaction.user.id });
 		if (ownProfile.permission == "permanent") {
 			const target = interaction.options.getUser("target");
-			let developerProfile = await Developer.findOne({ userid: target.id });
+			const developerProfile = await Developer.findOne({ userid: target.id });
 			if (!developerProfile) {
 				return interaction.reply(`${target.username} doesn't have acces to developer commands.`);
 			}
