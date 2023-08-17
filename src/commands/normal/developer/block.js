@@ -1,4 +1,5 @@
 const Block = require("../../../schemas/block.js");
+const Developer = require("../../../schemas/developer.js");
 const { SlashCommandBuilder } = require('discord.js');
 const mongoose = require("mongoose");
 
@@ -13,18 +14,22 @@ module.exports = {
 	async execute(interaction) {
 		const target = interaction.options.getUser("target");
 		let blockprofile = await Block.findOne({ userid: target.id });
+		let developerProfile = await Developer.findOne({ userid: target.id });
 
-		if (!blockprofile) {
-			blockprofile = await new Block({
-				_id: new mongoose.Types.ObjectId(),
-				userid: target.id
-			});
-			
-			await blockprofile.save();
-			interaction.reply(`You blocked ${target.username} from using commands.`);
-		} 
-		else{
-			interaction.reply(`${target.username} was already blocked from using commands.`)
+		if (developerProfile.permission != "permanent") {
+			if (!blockprofile) {
+				blockprofile = await new Block({
+					userid: target.id
+				});
+				
+				await blockprofile.save();
+				interaction.reply(`You blocked ${target.username} from using commands.`);
+			} 
+			else{
+				interaction.reply(`${target.username} was already blocked from using commands.`);
+			}
+		} else {
+			interaction.reply(`${target.username} has permanent developer, you can't block them from using commands`);
 		}
 	},
 };
