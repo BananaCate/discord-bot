@@ -3,31 +3,34 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('adddeveloper')
-		.setDescription("Adds a user to the developer list")
+		.setName('addpermdeveloper')
+		.setDescription("Adds a user to the permanent developer list")
 		.addUserOption(option => 
 			option.setName("target")
-				.setDescription("The person you want to give acces to developer commands")
+				.setDescription("The person you want to give acces to permanent developer commands")
 				.setRequired(true)),
 	async execute(interaction) {
-		const ownProfile = await Developer.findOne({ userid: interaction.user.id });
-		if (ownProfile.permission == "permanent") {
-			const target = interaction.options.getUser("target");
-			let developerProfile = await Developer.findOne({ userid: target.id });
+        const target = interaction.options.getUser("target");
+        let developerProfile = await Developer.findOne({ userid: target.id });
 
-			if (!developerProfile) {
-				developerProfile = await new Developer({
-					userid: target.id,
-					permission: "permanent"
-				});
-				
-				await developerProfile.save();
-				interaction.reply(`You gave ${target.username} access to developer commands.`);
-			}else {
-				interaction.reply(`${target.username} already had acces to developer commands.`);
-			}
-		} else {
-			interaction.reply("You are not a permanent developer, you can't give others developer commands.")
-		}
+        if (!developerProfile) {
+            developerProfile = await new Developer({
+                userid: target.id,
+                permission: "permanent"
+            });
+            
+            await developerProfile.save();
+            interaction.reply(`You gave ${target.username} access permanently to developer commands.`);
+        }
+        else {
+            if (developerProfile.permission == "temporary") {
+                developerProfile.permission = "permanent";
+                await developerProfile.save();
+                interaction.reply(`You gave ${target.username} acces permantly to developer commands.`);
+            } 
+            else {
+                interaction.reply(`${target.username} already had permanent developer commands.`);
+            }
+        }
 	},
 };
