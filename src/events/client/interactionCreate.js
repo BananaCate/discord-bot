@@ -17,7 +17,7 @@ module.exports = {
 				const { commands } = client;
 				const { commandName } = interaction;
 				const commandCategory = findCommandCategory(commandName);
-				console.log(commandCategory == "owner")
+				
 				if (commandCategory == "owner" && interaction.user.id != "441240050861211648") {
 					return interaction.reply("This is only for Banana Cate.");
 				}
