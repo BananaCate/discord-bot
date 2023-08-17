@@ -1,7 +1,6 @@
 const Block = require("../../../schemas/block.js");
 const Developer = require("../../../schemas/developer.js");
 const { SlashCommandBuilder } = require('discord.js');
-const mongoose = require("mongoose");
 
 module.exports = {
 	data: new SlashCommandBuilder()
