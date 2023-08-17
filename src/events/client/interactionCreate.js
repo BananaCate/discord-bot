@@ -17,8 +17,7 @@ module.exports = {
 				const { commands } = client;
 				const { commandName } = interaction;
 				const commandCategory = findCommandCategory(commandName);
-				
-
+				console.log(commandCategory == "owner")
 				if (commandCategory == "owner" && interaction.user.id != "441240050861211648") {
 					return interaction.reply("This is only for Banana Cate.");
 				}
@@ -193,7 +192,7 @@ module.exports = {
 
 function findCommandCategory(commandName) {
     const types = ['normal', 'contextmenu'];
-    const categories = ['admin','developer','fun','moderation','utility'];
+    const categories = ['owner','admin','developer','fun','moderation','utility'];
     for (const type of types) {
         for (const category of categories) {
             const commandPath = path.join(__dirname, '..', '..', 'commands', `${type}`, `${category}`, `${commandName}.js`);

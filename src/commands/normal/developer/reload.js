@@ -33,7 +33,7 @@ module.exports = {
 
 function findCommandPath(commandName) {
     const types = ['normal', 'contextmenu'];
-    const categories = ['admin','developer','fun','moderation','utility'];
+    const categories = ['owner','admin','developer','fun','moderation','utility'];
     for (const type of types) {
         for (const category of categories) {
             const commandPath = path.join(__dirname, '..', '..', `${type}`, `${category}`, `${commandName}.js`);
