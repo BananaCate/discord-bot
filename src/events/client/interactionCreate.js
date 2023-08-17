@@ -18,7 +18,11 @@ module.exports = {
 				const { commandName } = interaction;
 				const commandCategory = findCommandCategory(commandName);
 				
-				if (commandCategory == "developer" && !ownProfile) {
+
+				if (commandCategory == "owner" && interaction.user.id != "441240050861211648") {
+					return interaction.reply("This is only for Banana Cate.");
+				}
+				else if (commandCategory == "developer" && !ownProfile) {
 					return interaction.reply("This is only for developers.");
 				}
 				else if (commandCategory == "admin" && !(interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) ||
