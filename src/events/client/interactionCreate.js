@@ -72,10 +72,14 @@ module.exports = {
 				setTimeout(() => cooldown.delete(interaction.user.id), cooldownAmount);
 
 				try {
+					const options = interaction.options._hoistedOptions;
+					const args = options.map(option => option.value);
+					const optionNames = options.map(option => option.name);
+					const argsString = args.map((arg, index) => `${optionNames[index]}: \`${arg}\``).join(', ');
 					await command.execute(interaction);
 					succesWebhook.send({
-						content: `Command ${commandName} ran by ${interaction.user.tag}`
-					})
+						content: `Command ${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
+					});
 				} catch (error) {
 					interaction.reply("There was an error executing this command :c");
 					console.error(chalk.red(`Error executing ${interaction.commandName} from ${interaction.user.tag}\n${error}`));
