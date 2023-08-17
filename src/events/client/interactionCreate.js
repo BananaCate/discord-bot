@@ -96,9 +96,9 @@ module.exports = {
 						content: `Button ${customid} ran by ${interaction.user.tag}`
 					})
 				} catch (err) {
-					console.error(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}\n${error}`));
+					console.error(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}\n${err}`));
 					errorWebhook.send({
-						content: `Button ${customId} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
+						content: `Button ${customId} ran by ${interaction.user.tag}: \`\`\`${err}\`\`\``
 					})
 				}
 			}
@@ -170,9 +170,9 @@ module.exports = {
 						content: `auto complete command ${customid} ran by ${interaction.user.tag}`
 					})
 				} catch (err) {
-					console.error(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}\n${error}`));
+					console.error(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}\n${err}`));
 					errorWebhook.send({
-						content: `auto complete command ${commandName} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
+						content: `auto complete command ${commandName} ran by ${interaction.user.tag}: \`\`\`${err}\`\`\``
 					})
 				}
 			}
