@@ -18,7 +18,6 @@ module.exports = {
 
 			if (!developerProfile) {
 				developerProfile = await new Developer({
-					_id: new mongoose.Types.ObjectId(),
 					userid: target.id,
 					permission: "temporary"
 				});
