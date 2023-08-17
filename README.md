@@ -1,0 +1,1 @@
+Hello this is me bana cat fucking around and finding out abut discord bots with discord.js
