@@ -148,7 +148,7 @@ module.exports = {
 				try {
 					await contextCommand.execute(interaction);
 					succesWebhook.send({
-						content: `Context menu command ${customid} ran by ${interaction.user.tag}`
+						content: `Context menu command ${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.error(chalk.red(`Error executing context menu command ${commandName} from ${interaction.user.tag}\n${error}`));
@@ -167,7 +167,7 @@ module.exports = {
 				try {
 					await command.autocomplete(interaction);
 					succesWebhook.send({
-						content: `auto complete command ${customid} ran by ${interaction.user.tag}`
+						content: `auto complete command ${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (err) {
 					console.error(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}\n${err}`));
