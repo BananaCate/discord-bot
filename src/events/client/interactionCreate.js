@@ -1,9 +1,10 @@
 const { Collection, InteractionType, PermissionsBitField, WebhookClient } = require('discord.js');
+const { succesWebhook, errorWebhook } = require('../../../config.json');
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const errorWebhook = new WebhookClient({ url: 'https://discord.com/api/webhooks/1141391428673618032/Qy1r3K9vHOewMgdZr8eYJZ1LQnMdwAAPyQL68UanYXqVgat7bLq6rnN1lMdX628zBsHT' });
-const succesWebhook = new WebhookClient({ url: 'https://discord.com/api/webhooks/1141469514312192101/FHn3qky058ViFW9mdn4jo4bhrGqw5M7Ns5WQmeXjiUA9xQod_qdAPoddUqWVJ6oNdV2X' });
+const errorWebhook = new WebhookClient({ url: errorWebhook });
+const succesWebhook = new WebhookClient({ url: succesWebhook });
 const Block = require("../../schemas/block.js");
 const Developer = require("../../schemas/developer.js");
 
@@ -85,10 +86,13 @@ module.exports = {
 					});
 				} catch (error) {
 					interaction.reply("There was an error executing this command :c");
-					console.error(chalk.red(`Error executing ${interaction.commandName} from ${interaction.user.tag}\n${error}`));
+
+					console.log(chalk.red(`Error executing ${commandName} from ${interaction.user.tag}`));
+					console.error(error)
+					
 					errorWebhook.send({
-						content: `Command ${commandName} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
-					})
+						content: `Command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+					});
 				}
 			}
 			else if (interaction.isButton()) {
@@ -103,10 +107,12 @@ module.exports = {
 						content: `Button ${customid} ran by ${interaction.user.tag}`
 					})
 				} catch (err) {
-					console.error(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}\n${err}`));
+					console.log(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}`));
+					console.error(err)
+					
 					errorWebhook.send({
-						content: `Button ${customId} ran by ${interaction.user.tag}: \`\`\`${err}\`\`\``
-					})
+						content: `Button ${customId} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+					});
 				}
 			}
 			else if (interaction.isSelectMenu()) {
@@ -121,10 +127,12 @@ module.exports = {
 						content: `Select Menu ${customid} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
-					console.error(chalk.red(`Error executing select menu ${customId} from ${interaction.user.tag}\n${error}`));
+					console.log(chalk.red(`Error executing select menu ${customId} from ${interaction.user.tag}`));
+					console.error(error)
+					
 					errorWebhook.send({
-						content: `Select menu ${customId} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
-					})
+						content: `Select menu ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+					});
 				}
 			}
 			else if(interaction.type == InteractionType.ModalSubmit) {
@@ -139,10 +147,12 @@ module.exports = {
 						content: `Modal ${customid} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
-					console.error(chalk.red(`Error executing modal ${customId} from ${interaction.user.tag}\n${error}`));
+					console.log(chalk.red(`Error executing modal ${customId} from ${interaction.user.tag}`));
+					console.error(err)
+					
 					errorWebhook.send({
-						content: `Modal ${customId} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
-					})
+						content: `Modal ${customId} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+					});
 				}
 			}
 			else if (interaction.isContextMenuCommand()) {
@@ -158,10 +168,12 @@ module.exports = {
 						content: `Context menu command ${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
-					console.error(chalk.red(`Error executing context menu command ${commandName} from ${interaction.user.tag}\n${error}`));
+					console.log(chalk.red(`Error executing context menu command ${commandName} from ${interaction.user.tag}`));
+					console.error(err)
+					
 					errorWebhook.send({
-						content: `Context menu command ${commandName} ran by ${interaction.user.tag}: \`\`\`${error}\`\`\``
-					})
+						content: `Context menu command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+					});
 				}
 			}
 			else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
@@ -177,10 +189,12 @@ module.exports = {
 						content: `auto complete command ${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (err) {
-					console.error(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}\n${err}`));
+					console.log(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}`));
+					console.error(err)
+					
 					errorWebhook.send({
-						content: `auto complete command ${commandName} ran by ${interaction.user.tag}: \`\`\`${err}\`\`\``
-					})
+						content: `Auto complete command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+					});
 				}
 			}
 		}

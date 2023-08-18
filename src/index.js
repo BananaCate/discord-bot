@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token, mongodbtoken, trustedusers } = require('../config.json');
+const { token, mongodbtoken } = require('../config.json');
 const { connect } = require('mongoose');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
