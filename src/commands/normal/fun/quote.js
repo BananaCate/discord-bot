@@ -13,7 +13,6 @@ module.exports = {
                 .setDescription("The message you want to quote")
                 .setRequired(true)),
 	async execute(interaction) {
-        // ping issue
         const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
         const member = interaction.options.getUser("user");
 		const webhookchannel = interaction.channel;
@@ -28,6 +27,7 @@ module.exports = {
             await webhook.send({
                 content: webhookmessage,
                 avatarURL: member.displayAvatarURL({ dynamic: true }),
+                allowedMentions: { users: [] }
             });
             
             webhook.delete();

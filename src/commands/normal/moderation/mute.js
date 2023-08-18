@@ -44,7 +44,10 @@ module.exports = {
                 return interaction.reply({content: "You have chosen a time limit above 28d", ephemeral: true});
             }
             await target.timeout(Durationtime, reason);
-            interaction.reply(`${target} has been muted for ${timeOption} for: \`${reason}\`.`);
+            interaction.reply({
+                content: `${target} has been muted for ${timeOption} for: \`${reason}\`.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to time out members.');
         }

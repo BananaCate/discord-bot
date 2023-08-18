@@ -18,7 +18,10 @@ module.exports = {
         const role = interaction.options.getRole('role');
         if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {    
             await member.roles.add(role);
-            interaction.reply(`You added the role ${role} to: ${member}`);
+            interaction.reply({
+                content: `You added the role ${role} to: ${member}`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to give roles.');
         }

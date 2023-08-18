@@ -41,7 +41,7 @@ module.exports = {
             const targetavatar = interaction.options.getString("target-avatar") ?? webhook.avatarURL();
             const targetchannel = interaction.options.getChannel("target-channel");
 
-            const targetchannelid = targetchannel.id ?? webhook.channelId;
+            const targetchannelid = targetchannel ? targetchannel.id : webhook.channelId;
 
             edited = "I have edited the following:";
 
@@ -66,7 +66,10 @@ module.exports = {
                 channel: targetchannelid,
             })
 
-            interaction.reply(edited);
+            interaction.reply({
+                content: edited,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permission to edit a webhook.');
         }

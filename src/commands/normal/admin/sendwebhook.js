@@ -12,7 +12,6 @@ module.exports = {
             option.setName("channel")
                 .setDescription("The channel where there is a webhook")),
 	async execute(interaction) {
-        // ping issue
         const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 		const webhookchannel = interaction.options.getChannel("channel") ?? interaction.channel;
         const webhookmessage = interaction.options.getString("message");
@@ -28,6 +27,7 @@ module.exports = {
             await webhook.send({
                 content: webhookmessage,
                 avatarURL: webhook.avatarURL(),
+                allowedMentions: { users: [] }
             });
             
             interaction.reply(`Sent \"\`${webhookmessage}\`\" in ${webhookchannel}`);

@@ -20,15 +20,24 @@ module.exports = {
             });
             
             await developerProfile.save();
-            interaction.reply(`You gave ${target.username} access permanently to developer commands.`);
+            interaction.reply({
+                content: `You gave ${target} access permanently to developer commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         }
         else {
             if (developerProfile.permission == "permanent") {
-                return interaction.reply(`${target.username} already had permanent developer commands.`);
+                return interaction.reply({
+                    content: `${target} already had permanent developer commands.`,
+                    allowedMentions: { users: [], roles: [], everyone: false }
+                });
             }
             developerProfile.permission = "permanent";
             await developerProfile.save();
-            interaction.reply(`You gave ${target.username} acces permantly to developer commands.`);
+            interaction.reply({
+                content: `You gave ${target} acces permantly to developer commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         }
 	},
 };

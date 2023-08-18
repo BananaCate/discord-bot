@@ -13,11 +13,17 @@ module.exports = {
 		const target = interaction.options.getUser("target");
 		let blockprofile = await Block.findOne({ userid: target.id });
 		if (!blockprofile) {
-			interaction.reply(`${target.username} wasn't blocked from using commands.`)
+			interaction.reply({
+				content: `${target} wasn't blocked from using commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+			})
 		}
 		else {
 			await Block.deleteOne({ userid: target.id });
-			interaction.reply(`${target.username} has been unblocked from using commands.`)
+			interaction.reply({
+				content: `${target} has been unblocked from using commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+			})
 		}
 	},
 };

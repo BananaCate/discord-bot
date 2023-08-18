@@ -18,7 +18,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.BanMembers) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await interaction.guild.members.unban(member, { "reason": reason });
-            interaction.reply(`You unbanned ${member} for reason: \`${reason}\`.`);
+            interaction.reply({
+                content: `You unbanned ${member} for reason: \`${reason}\`.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to unban members.');
         }

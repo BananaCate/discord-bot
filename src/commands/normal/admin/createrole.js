@@ -17,7 +17,10 @@ module.exports = {
         const reason = interaction.options.getString('reason') ?? "No reason provided";
         if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await interaction.guild.roles.create({ name: name, reason: reason });
-            interaction.reply(`Created role ${name} with reason: \`${reason}\`.`);
+            interaction.reply({
+                content: `Created role ${name} with reason: \`${reason}\`.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to create a role.');
         }

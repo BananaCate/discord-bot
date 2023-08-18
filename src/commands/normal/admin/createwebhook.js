@@ -20,7 +20,10 @@ module.exports = {
                 name: WebookName,
                 avatar: 'https://cdn.discordapp.com/avatars/505301679999287299/a352379bfc046ed00a59444c551d972c.png?size=4096'
             })
-            interaction.reply(`Created the webook \`${WebookName}\` in ${targetChannel}`);
+            interaction.reply({
+                content: `Created the webook \`${WebookName}\` in ${targetChannel}`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permission to create a webhook.');
         }

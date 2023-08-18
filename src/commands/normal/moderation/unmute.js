@@ -18,7 +18,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.ModerateMembers) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await target.timeout(null, reason);
-            interaction.reply(`${target} has been unmuted for reason: \`${reason}\`.`);
+            interaction.reply({
+                content: `${target} has been unmuted for reason: \`${reason}\`.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to unmute members.');
         }

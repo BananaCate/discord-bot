@@ -26,7 +26,10 @@ module.exports = {
 		let developerProfile = await Developer.findOne({ userid: target.id });
 		
 		if (developerProfile) {
-			return interaction.reply(`${target.username} already had acces to developer commands.`);
+			return interaction.reply({
+				content: `${target} already had acces to developer commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+			});
 		}
 		developerProfile = await new Developer({
 			userid: target.id,
@@ -34,6 +37,9 @@ module.exports = {
 		});
 		
 		await developerProfile.save();
-		interaction.reply(`You gave ${target.username} access to developer commands.`);
+		interaction.reply({
+			content: `You gave ${target} access to developer commands.`,
+			allowedMentions: { users: [], roles: [], everyone: false }
+		});
 	},
 };

@@ -12,9 +12,12 @@ module.exports = {
             const roleArray = Array.from(guildRoles.values());
             roles = "The roles in this server are:\n";
             for (i = 0; i < roleArray.length; i++) {
-                roles += `${roleArray[i].name}\n`;
+                roles += `${roleArray[i]}\n`;
             }
-            interaction.reply(roles);
+            interaction.reply({
+                content: roles,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply("I do not have permission to see the roles.")
         }

@@ -18,7 +18,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.BanMembers || botPermission.has(PermissionsBitField.Flags.Administrator))) {
             await interaction.guild.members.ban(member, { "reason": reason });
-            interaction.reply(`You banned ${member} for reason: \`${reason}\``);
+            interaction.reply({
+                content: `You banned ${member} for reason: \`${reason}\``,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to ban members.');
         }

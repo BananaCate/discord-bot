@@ -17,6 +17,9 @@ module.exports = {
     },
 	async execute(interaction) {
 		const option = interaction.options.getString("color");
-        await interaction.reply(`You told me, "${option}"`)
+        await interaction.reply({
+            content: `You told me, "${option}"`,
+            allowedMentions: { users: [], roles: [], everyone: false }
+        })
 	},
 };

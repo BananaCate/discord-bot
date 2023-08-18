@@ -29,8 +29,8 @@ module.exports = {
 			else {
 				interaction.reply({content: "Done", ephemeral : true})
 			}
-		} catch (err) {
-			interaction.reply(`Error: ${err}`);
+		} catch (error) {
+			interaction.reply(`Error: ${error}`);
 		}
 			
 	},

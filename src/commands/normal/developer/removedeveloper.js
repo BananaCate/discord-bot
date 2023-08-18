@@ -18,13 +18,22 @@ module.exports = {
 		const target = interaction.options.getUser("target");
 		const developerProfile = await Developer.findOne({ userid: target.id });
 		if (!developerProfile) {
-			return interaction.reply(`${target.username} doesn't have acces to developer commands.`);
+			return interaction.reply({
+				content: `${target} doesn't have acces to developer commands.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+			});
 		}
 		if (developerProfile.permission == "permanent") {
-			return interaction.reply(`${target.username} has permanent developer.`)
+			return interaction.reply({
+				content: `${target} has permanent developer.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+			})
 		}
 		
 		await Developer.deleteOne({ userid: target.id });
-		interaction.reply(`You removed ${target.username}'s access from developer commands.`);
+		interaction.reply({
+			content: `You removed ${target}'s access from developer commands.`,
+			allowedMentions: { users: [], roles: [], everyone: false }
+		});
 	},
 };

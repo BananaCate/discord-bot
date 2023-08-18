@@ -19,7 +19,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await member.roles.remove(role);
-            interaction.reply(`You removed the role ${role} from: ${member}.`);
+            interaction.reply({
+                content: `You removed the role ${role} from: ${member}.`,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to remove roles.');
         }

@@ -8,8 +8,10 @@ module.exports = {
 			option.setName('target')
 				.setDescription('The user\'s avatar to show')),
 	async execute(interaction) {
-		const user = interaction.options.getUser('target');
-		if (user) return interaction.reply(`${user.username}'s avatar: ${user.displayAvatarURL({ dynamic: true })}`);
-		interaction.reply(`Your avatar: ${interaction.user.displayAvatarURL()}`);
+		const user = interaction.options.getUser('target') ?? interaction.user;
+		interaction.reply({
+			content: `${user}'s avatar: ${user.displayAvatarURL({ dynamic: true })}`,
+			allowedMentions: { users: [], roles: [], everyone: false }
+		});
 	},
 };

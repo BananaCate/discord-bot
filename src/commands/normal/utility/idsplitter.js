@@ -15,7 +15,6 @@ module.exports = {
             option.setName("suffix")
             .setDescription("The thing you want behind each id")),
 	async execute(interaction) {
-        // ping issue
         splitBefore = interaction.options.getString("prefix") ?? "";
         splitAfter = interaction.options.getString("suffix") ?? "";
 
@@ -45,6 +44,9 @@ module.exports = {
                 formatedIds += splitBefore + idArray3[i] + splitAfter;
             }
         }
-        interaction.reply(formatedIds);
+        interaction.reply({
+            content: formatedIds,
+            allowedMentions: { users: [], roles: [], everyone: false }
+        });
 	},
 };

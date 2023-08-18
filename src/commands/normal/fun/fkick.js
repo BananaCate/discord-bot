@@ -10,6 +10,9 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const member = interaction.options.getMember('target');
-		interaction.reply({ content: `You wanted to kick: ${member.user.username}`, ephemeral: true });
+		interaction.reply({ 
+			content: `You wanted to kick: ${member.user}`, 
+			ephemeral: true 
+		});
 	},
 };

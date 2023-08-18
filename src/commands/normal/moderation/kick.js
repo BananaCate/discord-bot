@@ -18,7 +18,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.KickMembers)  ||botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await member.kick(reason);
-            interaction.reply(`You kicked ${member} for reason: \`${reason}\``);
+            interaction.reply({
+                content: `You kicked ${member} for reason: \`${reason}\``,
+                allowedMentions: { users: [], roles: [], everyone: false }
+            });
         } else {
             interaction.reply('I do not have permissions to kick members.');
         }
