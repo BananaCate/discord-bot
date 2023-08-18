@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('apacheconfig')
-		.setDescription('Send a message with the apporpriate code innit')
+		.setDescription('Send a message with the apporpriate code inn-it')
         .addStringOption(option =>
             option.setName("directoryname")
                 .setDescription("The thing after /var/www/")
@@ -13,8 +13,8 @@ module.exports = {
                 .setDescription("subdomain.domain")
                 .setRequired(true)),
 	async execute(interaction) {
-        directoryname = interaction.options.getString("directoryname");
-        url = interaction.options.getString("url");
+        const directoryname = interaction.options.getString("directoryname");
+        const url = interaction.options.getString("url");
 		interaction.reply(`
         \`\`\`
         <VirtualHost *:80>

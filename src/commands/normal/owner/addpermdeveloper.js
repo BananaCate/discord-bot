@@ -23,14 +23,12 @@ module.exports = {
             interaction.reply(`You gave ${target.username} access permanently to developer commands.`);
         }
         else {
-            if (developerProfile.permission == "temporary") {
-                developerProfile.permission = "permanent";
-                await developerProfile.save();
-                interaction.reply(`You gave ${target.username} acces permantly to developer commands.`);
-            } 
-            else {
-                interaction.reply(`${target.username} already had permanent developer commands.`);
+            if (developerProfile.permission == "permanent") {
+                return interaction.reply(`${target.username} already had permanent developer commands.`);
             }
+            developerProfile.permission = "permanent";
+            await developerProfile.save();
+            interaction.reply(`You gave ${target.username} acces permantly to developer commands.`);
         }
 	},
 };

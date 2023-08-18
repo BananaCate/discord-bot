@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,9 +12,14 @@ module.exports = {
             option.setName('reason')
                 .setDescription('The reason you want to create the role')),
 	async execute(interaction) {
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
         const name = interaction.options.getString('name');
         const reason = interaction.options.getString('reason') ?? "No reason provided";
-        await interaction.guild.roles.create({ name: name, reason: reason });
-		interaction.reply(`Created role ${name} with reason: \`${reason}\`.`);
+        if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            await interaction.guild.roles.create({ name: name, reason: reason });
+            interaction.reply(`Created role ${name} with reason: \`${reason}\`.`);
+        } else {
+            interaction.reply('I do not have permissions to create a role.');
+        }
 	},
 };

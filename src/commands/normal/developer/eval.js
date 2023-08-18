@@ -9,6 +9,7 @@ module.exports = {
 			.setDescription("The code you want the bot to run")
 			.setRequired(true)),
 	async execute(interaction) {
+		// ping issue
 		const code = interaction.options.getString("input");
 
 		const wrappedCode = `

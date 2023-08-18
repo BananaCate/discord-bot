@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,31 +16,37 @@ module.exports = {
             option.setName('reason')
                 .setDescription('The reason you want to mute them out for')),
 	async execute(interaction) {
-        const target = interaction.options.getMember('target');
-        const reason = interaction.options.getString('reason') ?? 'There was no reason provided';
-		const timeOption = interaction.options.getString("time");
-        
-        const timeformat = timeOption.substring(timeOption.length-1,timeOption.length);
-        const timeRest = Number(timeOption.substring(0,timeOption.length-1));
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 
-        Durationtime = 0;
-        if (timeformat == "m") {
-            Durationtime = timeRest * 60 * 1000;
-        }
-        else if (timeformat == "h") {
-            Durationtime = timeRest * 60 * 60 * 1000;
-        }
-        else if (timeformat == "d") {
-            Durationtime = timeRest * 24 * 60 * 60 * 1000;
-        }
-        else if (timeformat == "w") {
-            Durationtime = timeRest * 7 * 24 * 60 * 60 * 1000;
-        }
+        if (botPermission.has(PermissionsBitField.Flags.ModerateMembers) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            const target = interaction.options.getMember('target');
+            const reason = interaction.options.getString('reason') ?? 'There was no reason provided';
+            const timeOption = interaction.options.getString("time");
+            
+            const timeformat = timeOption.substring(timeOption.length-1,timeOption.length);
+            const timeRest = Number(timeOption.substring(0,timeOption.length-1));
 
-        if (Durationtime > 28*24*60*60*1000) {
-            return interaction.reply({content: "You have chosen a time limit above 28d", ephemeral: true});
+            Durationtime = 0;
+            if (timeformat == "m") {
+                Durationtime = timeRest * 60 * 1000;
+            }
+            else if (timeformat == "h") {
+                Durationtime = timeRest * 60 * 60 * 1000;
+            }
+            else if (timeformat == "d") {
+                Durationtime = timeRest * 24 * 60 * 60 * 1000;
+            }
+            else if (timeformat == "w") {
+                Durationtime = timeRest * 7 * 24 * 60 * 60 * 1000;
+            }
+            
+            if (Durationtime > 28*24*60*60*1000) {
+                return interaction.reply({content: "You have chosen a time limit above 28d", ephemeral: true});
+            }
+            await target.timeout(Durationtime, reason);
+            interaction.reply(`${target} has been muted for ${timeOption} for: \`${reason}\`.`);
+        } else {
+            interaction.reply('I do not have permissions to time out members.');
         }
-        await target.timeout(Durationtime, reason);
-        interaction.reply(`${target} has been muted for ${timeOption} for: \`${reason}\`.`);
 	},
 };

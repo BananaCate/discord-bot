@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -21,50 +21,54 @@ module.exports = {
             option.setName("target-channel")
                 .setDescription("The channel you want to edit to")),
 	async execute(interaction) {
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
         const name = interaction.options.getString("name");
+        if (botPermission.has(PermissionsBitField.Flags.ManageWebhooks) || botPermission.has(PermissionsBitField.Flags.Administrator)) { 
+            const webhookcollection = await channel.fetchWebhooks();
 
-        const webhookcollection = await channel.fetchWebhooks();
+            if(webhookcollection.size == 0) {
+                return interaction.reply(`There are no webhooks in ${channel}.`);
+            }
+            
+            const webhook = webhookcollection.find(wh => wh.token && wh.name == name);
 
-        if(webhookcollection.size == 0) {
-            return interaction.reply(`There are no webhooks in ${channel}.`);
+            if (webhook.size == 0) {
+                return interaction.reply(`There is no webhook with name: ${name}.`)
+            }
+
+            const targetname = interaction.options.getString("target-name") ?? webhook.name;
+            const targetavatar = interaction.options.getString("target-avatar") ?? webhook.avatarURL();
+            const targetchannel = interaction.options.getChannel("target-channel");
+
+            const targetchannelid = targetchannel.id ?? webhook.channelId;
+
+            edited = "I have edited the following:";
+
+            if (targetname != webhook.name) {
+                edited += `\nName: ${webhook.name} -> ${targetname}`;
+            }
+
+            if (targetchannelid != channel.id) {
+                edited += `\nLocation: <#${channel.id}> -> <#${targetchannelid}>`;
+            }
+
+            if (targetavatar != webhook.avatarURL()) {
+                edited += `\nAvatar: ${webhook.avatarURL()} -> ${targetavatar} .`;
+            }
+            else {
+                edited += ".";
+            }
+
+            await webhook.edit({
+                name: targetname,
+                avatar: targetavatar,
+                channel: targetchannelid,
+            })
+
+            interaction.reply(edited);
+        } else {
+            interaction.reply('I do not have permission to edit a webhook.');
         }
-        
-        const webhook = webhookcollection.find(wh => wh.token && wh.name == name);
-
-        if (webhook.size == 0) {
-            return interaction.reply(`There is no webhook with name: ${name}.`)
-        }
-
-        const targetname = interaction.options.getString("target-name") ?? webhook.name;
-        const targetavatar = interaction.options.getString("target-avatar") ?? webhook.avatarURL();
-        const targetchannel = interaction.options.getChannel("target-channel");
-
-        const targetchannelid = targetchannel ? targetchannel.id : webhook.channelId;
-
-        edited = "I have edited the following:";
-
-        if (targetname != webhook.name) {
-            edited += `\nName: ${webhook.name} -> ${targetname}`;
-        }
-
-        if (targetchannelid != channel.id) {
-            edited += `\nLocation: <#${channel.id}> -> <#${targetchannelid}>`;
-        }
-
-        if (targetavatar != webhook.avatarURL()) {
-            edited += `\nAvatar: ${webhook.avatarURL()} -> ${targetavatar} .`;
-        }
-        else {
-            edited += ".";
-        }
-
-        await webhook.edit({
-            name: targetname,
-            avatar: targetavatar,
-            channel: targetchannelid,
-        })
-
-        interaction.reply(edited);
 	},
 };

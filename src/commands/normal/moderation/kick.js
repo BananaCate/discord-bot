@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,10 +12,15 @@ module.exports = {
             option.setName('reason')
                 .setDescription('The reason you want to kick this member')),
 	async execute(interaction) {
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 		const member = interaction.options.getMember('target');
         const reason = interaction.options.getString('reason') ?? 'No reason was given';
 
-        await member.kick(reason);
-		interaction.reply(`You kicked ${member} for reason: \`${reason}\``);
+        if (botPermission.has(PermissionsBitField.Flags.KickMembers)  ||botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            await member.kick(reason);
+            interaction.reply(`You kicked ${member} for reason: \`${reason}\``);
+        } else {
+            interaction.reply('I do not have permissions to kick members.');
+        }
 	},
 };

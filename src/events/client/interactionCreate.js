@@ -18,31 +18,26 @@ module.exports = {
 				const { commands } = client;
 				const { commandName } = interaction;
 				const commandCategory = findCommandCategory(commandName);
-				
+				const permission = interaction.member.permissions;
+				const flag = PermissionsBitField.Flags;
+
 				if (commandCategory == "owner" && interaction.user.id != "441240050861211648") {
 					return interaction.reply("This is only for Banana Cate.");
 				}
 				else if (commandCategory == "developer" && !ownProfile) {
 					return interaction.reply("This is only for developers.");
 				}
-				else if (commandCategory == "admin" && !(interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) ||
-														ownProfile)) {
+				else if (commandCategory == "admin" && !(permission.has(flag.Administrator) ||		ownProfile)) {
 					return interaction.reply("This is only for admins.");
 				}
 				else if (commandCategory == "moderation" ) {
-					if(commandName.includes("ban") && !(interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers) || 
-					interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) || ownProfile)) {
+					if(commandName.includes("ban") && !(permission.has(flag.BanMembers) ||		permission.has(flag.Administrator) || ownProfile)) {
 						return interaction.reply("You need ban permission's");
 					}
-					if (!(interaction.member.permissions.has(PermissionsBitField.Flags.KickMembers) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.ManageNicknames) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.ModerateMembers) ||
+					else if (!(permission.has(flag.KickMembers) || permission.has(flag.ManageChannels) || permission.has(flag.ManageMessages) || 
+							permission.has(flag.ManageNicknames) || permission.has(flag.ManageRoles) || permission.has(flag.ModerateMembers) ||
 
-							interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers) || 
-							interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) || ownProfile)) {
+							permission.has(flag.BanMembers) || permission.has(flag.Administrator) || ownProfile)) {
 						return interaction.reply("This is only for moderators.");
 					}
 				}
@@ -76,14 +71,25 @@ module.exports = {
 				setTimeout(() => cooldown.delete(interaction.user.id), cooldownAmount);
 
 				try {
-					const options = interaction.options._hoistedOptions;
-					const args = options.map(option => option.value);
-					const optionNames = options.map(option => option.name);
-					const argsString = args.map((arg, index) => `${optionNames[index]}: \`${arg}\``).join(', ');
+					const optionValues = [];
+					for (const option of interaction.options.data) {
+						const value = option.value;
+						const name = option.name;
+						optionValues.push(`${name}: \`${value}\``);
+					}
+					const argsString = optionValues.join(', ');
+
 					await command.execute(interaction);
-					succesWebhook.send({
-						content: `Command ${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
-					});
+					if (argsString) {
+						succesWebhook.send({
+							content: `Command ${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
+						});
+					}
+					else {
+						succesWebhook.send({
+							content: `Command ${commandName} ran by ${interaction.user.tag}`
+						});
+					}
 				} catch (error) {
 					interaction.reply("There was an error executing this command :c");
 
@@ -104,14 +110,14 @@ module.exports = {
 				try {
 					await button.execute(interaction);
 					succesWebhook.send({
-						content: `Button ${customid} ran by ${interaction.user.tag}`
+						content: `Button ${customId} ran by ${interaction.user.tag}`
 					})
-				} catch (err) {
+				} catch (error) {
 					console.log(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}`));
-					console.error(err)
+					console.error(error)
 					
 					errorWebhook.send({
-						content: `Button ${customId} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+						content: `Button ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -124,7 +130,7 @@ module.exports = {
 				try {
 					await menu.execute(interaction);
 					succesWebhook.send({
-						content: `Select Menu ${customid} ran by ${interaction.user.tag}`
+						content: `Select Menu ${customId} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing select menu ${customId} from ${interaction.user.tag}`));
@@ -144,14 +150,14 @@ module.exports = {
 				try { 
 					await modal.execute(interaction);
 					succesWebhook.send({
-						content: `Modal ${customid} ran by ${interaction.user.tag}`
+						content: `Modal ${customId} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing modal ${customId} from ${interaction.user.tag}`));
-					console.error(err)
+					console.error(error)
 					
 					errorWebhook.send({
-						content: `Modal ${customId} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+						content: `Modal ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -169,10 +175,10 @@ module.exports = {
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing context menu command ${commandName} from ${interaction.user.tag}`));
-					console.error(err)
+					console.error(error)
 					
 					errorWebhook.send({
-						content: `Context menu command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+						content: `Context menu command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -188,12 +194,12 @@ module.exports = {
 					succesWebhook.send({
 						content: `auto complete command ${commandName} ran by ${interaction.user.tag}`
 					})
-				} catch (err) {
+				} catch (error) {
 					console.log(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}`));
-					console.error(err)
+					console.error(error)
 					
 					errorWebhook.send({
-						content: `Auto complete command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${err.stack}\`\`\``
+						content: `Auto complete command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}

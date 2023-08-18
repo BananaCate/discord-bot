@@ -12,23 +12,24 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser("target");
-		let blockprofile = await Block.findOne({ userid: target.id });
-		let developerProfile = await Developer.findOne({ userid: target.id });
-
-		if (developerProfile.permission != "permanent") {
-			if (!blockprofile) {
-				blockprofile = await new Block({
-					userid: target.id
-				});
-				
-				await blockprofile.save();
-				interaction.reply(`You blocked ${target.username} from using commands.`);
-			} 
-			else{
-				interaction.reply(`${target.username} was already blocked from using commands.`);
+		const developerProfile = await Developer.findOne({ userid: target.id });
+		if (developerProfile) {
+			if (developerProfile.permission == "permanent") {
+				return interaction.reply(`${target.username} has permanent developer, you can't block them from using commands`);
+			} else {
+				Developer.deleteOne({userid: target.id});
 			}
-		} else {
-			interaction.reply(`${target.username} has permanent developer, you can't block them from using commands`);
 		}
+		let blockprofile = await Block.findOne({ userid: target.id });
+		if (blockprofile) {
+			return interaction.reply(`${target.username} was already blocked from using commands.`);
+		}
+
+		blockprofile = await new Block({
+			userid: target.id
+		});
+		
+		await blockprofile.save();
+		interaction.reply(`You blocked ${target.username} from using commands.`);
 	},
 };

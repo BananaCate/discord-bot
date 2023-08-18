@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -8,17 +8,23 @@ module.exports = {
             option.setName("channel")
                 .setDescription("External channel")),
 	async execute(interaction) {
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
         const channel = interaction.options.getChannel("channel") ?? interaction.channel;
-        const webhookcollection = await channel.fetchWebhooks();
-        if(webhookcollection.size == 0) {
-            return interaction.reply(`There are no webhooks in ${channel}`);
-        }
-        const webhooks = Array.from(webhookcollection.values());
         
-        message = `${channel} has the following webhook(s):\`\`\`\n`;
-        for (i = 0; i < webhooks.length; i++) {
-            message += `${webhooks[i].name}\n`;
+        if (botPermission.has(PermissionsBitField.Flags.ManageWebhooks || botPermission.has(PermissionsBitField.Flags.Administrator))) {
+            const webhookcollection = await channel.fetchWebhooks();
+            if(webhookcollection.size == 0) {
+                return interaction.reply(`There are no webhooks in ${channel}`);
+            }
+            const webhooks = Array.from(webhookcollection.values());
+            
+            message = `${channel} has the following webhook(s):\`\`\`\n`;
+            for (i = 0; i < webhooks.length; i++) {
+                message += `${webhooks[i].name}\n`;
+            }
+            interaction.reply(`${message}\`\`\``);
+        } else {
+            interaction.reply('I do not have permissions to list the webhooks.');
         }
-        interaction.reply(`${message}\`\`\``);
 	},
 };

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,10 +13,14 @@ module.exports = {
                 .setDescription('The role you want to add')
                 .setRequired(true)),
 	async execute(interaction) {
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 		const member = interaction.options.getMember('target');
         const role = interaction.options.getRole('role');
-
-        await member.roles.add(role);
-		interaction.reply(`You added the role ${role} to: ${member}`);
+        if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {    
+            await member.roles.add(role);
+            interaction.reply(`You added the role ${role} to: ${member}`);
+        } else {
+            interaction.reply('I do not have permissions to give roles.');
+        }
 	},
 };

@@ -11,21 +11,20 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const ownProfile = await Developer.findOne({ userid: interaction.user.id });
-		if (ownProfile.permission == "permanent") {
-			const target = interaction.options.getUser("target");
-			const developerProfile = await Developer.findOne({ userid: target.id });
-			if (!developerProfile) {
-				return interaction.reply(`${target.username} doesn't have acces to developer commands.`);
-			}
-			if (developerProfile.permission == "permanent") {
-				return interaction.reply(`${target.username} has permanent developer.`)
-			}
 
-			await Developer.deleteOne({ userid: target.id });
-			interaction.reply(`You removed ${target.username}'s access from developer commands.`);
-			
-		} else {
-			interaction.reply("You are not a permanent developer, you can't remove anyone's acces from developer commands.")
+		if (ownProfile.permission != "permanent") {
+			return interaction.reply("You are not a permanent developer")
 		}
+		const target = interaction.options.getUser("target");
+		const developerProfile = await Developer.findOne({ userid: target.id });
+		if (!developerProfile) {
+			return interaction.reply(`${target.username} doesn't have acces to developer commands.`);
+		}
+		if (developerProfile.permission == "permanent") {
+			return interaction.reply(`${target.username} has permanent developer.`)
+		}
+		
+		await Developer.deleteOne({ userid: target.id });
+		interaction.reply(`You removed ${target.username}'s access from developer commands.`);
 	},
 };

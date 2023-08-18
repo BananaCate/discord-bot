@@ -15,6 +15,7 @@ module.exports = {
             option.setName("suffix")
             .setDescription("The thing you want behind each id")),
 	async execute(interaction) {
+        // ping issue
         splitBefore = interaction.options.getString("prefix") ?? "";
         splitAfter = interaction.options.getString("suffix") ?? "";
 

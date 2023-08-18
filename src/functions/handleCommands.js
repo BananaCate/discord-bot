@@ -1,5 +1,5 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, token } = require('../../config.json');
+const { token } = require('../../config.json');
 const fs = require('node:fs');
 
 module.exports = (client) => {
@@ -33,7 +33,7 @@ module.exports = (client) => {
 			console.log(`Started refreshing ${commands.length} application (/) commands.`);
 			
 			await rest.put(
-				Routes.applicationCommands(clientId),
+				Routes.applicationCommands("1129723426601447554"),
 				{ body: commands },
 				);
 				

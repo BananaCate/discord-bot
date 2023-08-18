@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,21 +12,27 @@ module.exports = {
             option.setName("channel")
                 .setDescription("The channel where there is a webhook")),
 	async execute(interaction) {
+        // ping issue
+        const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 		const webhookchannel = interaction.options.getChannel("channel") ?? interaction.channel;
         const webhookmessage = interaction.options.getString("message");
 
-        const webhooks = await webhookchannel.fetchWebhooks();
-        const webhook = webhooks.find(wh => wh.token);
-
-        if (!webhook) {
-            return interaction.reply(`No webhook(s) in ${webhookchannel} was/were found that i can use!`);
+        if (botPermission.has(PermissionsBitField.Flags.ManageWebhooks) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            const webhooks = await webhookchannel.fetchWebhooks();
+            const webhook = webhooks.find(wh => wh.token);
+            
+            if (!webhook) {
+                return interaction.reply(`No webhook(s) in ${webhookchannel} was/were found that i can use!`);
+            }
+            
+            await webhook.send({
+                content: webhookmessage,
+                avatarURL: webhook.avatarURL(),
+            });
+            
+            interaction.reply(`Sent \"\`${webhookmessage}\`\" in ${webhookchannel}`);
+        } else {
+            interaction.reply('I do not have permissions to send a message trough a webhook.');
         }
-
-        await webhook.send({
-            content: webhookmessage,
-            avatarURL: webhook.avatarURL(),
-        });
-
-        interaction.reply(`Sent \"\`${webhookmessage}\`\" in ${webhookchannel}`);
 	},
 };
