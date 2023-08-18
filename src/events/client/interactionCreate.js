@@ -1,10 +1,10 @@
 const { Collection, InteractionType, PermissionsBitField, WebhookClient } = require('discord.js');
-const { succesWebhook, errorWebhook } = require('../../../config.json');
+const { succesWebhookurl, errorWebhookurl } = require('../../../config.json');
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const errorWebhook = new WebhookClient({ url: errorWebhook });
-const succesWebhook = new WebhookClient({ url: succesWebhook });
+const errorWebhook = new WebhookClient({ url: errorWebhookurl });
+const succesWebhook = new WebhookClient({ url: succesWebhookurl });
 const Block = require("../../schemas/block.js");
 const Developer = require("../../schemas/developer.js");
 
