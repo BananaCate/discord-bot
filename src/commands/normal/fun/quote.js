@@ -27,7 +27,7 @@ module.exports = {
             await webhook.send({
                 content: webhookmessage,
                 avatarURL: member.displayAvatarURL({ dynamic: true }),
-                allowedMentions: { users: [] }
+                allowedMentions: { users: [], roles: [], everyone: false }
             });
             
             webhook.delete();

@@ -27,7 +27,7 @@ module.exports = {
             await webhook.send({
                 content: webhookmessage,
                 avatarURL: webhook.avatarURL(),
-                allowedMentions: { users: [] }
+                allowedMentions: { users: [], roles: [], everyone: false }
             });
             
             interaction.reply(`Sent \"\`${webhookmessage}\`\" in ${webhookchannel}`);
