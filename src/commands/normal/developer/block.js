@@ -1,5 +1,5 @@
-const Block = require("../../../schemas/block.js");
-const Developer = require("../../../schemas/developer.js");
+const blockedusers = require("../../../schemas/blockedusers.js");
+const developers = require("../../../schemas/developers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser("target");
-		const developerProfile = await Developer.findOne({ userid: target.id });
+		const developerProfile = await developers.findOne({ userid: target.id });
 		if (developerProfile) {
 			if (developerProfile.permission == "permanent") {
 				return interaction.reply({
@@ -20,10 +20,10 @@ module.exports = {
 					allowedMentions: { users: [], roles: [], everyone: false }
 				});
 			} else {
-				Developer.deleteOne({userid: target.id});
+				developers.deleteOne({userid: target.id});
 			}
 		}
-		let blockprofile = await Block.findOne({ userid: target.id });
+		let blockprofile = await blockedusers.findOne({ userid: target.id });
 		if (blockprofile) {
 			return interaction.reply({
 				content: `${target} was already blocked from using commands.`,
@@ -31,7 +31,7 @@ module.exports = {
 			});
 		}
 
-		blockprofile = await new Block({
+		blockprofile = await new blockedusers({
 			userid: target.id
 		});
 		

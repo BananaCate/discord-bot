@@ -20,6 +20,8 @@ client.handleCommands();
 client.handleEvents();
 client.handleComponents();
 client.login(token); 
-(async () => {
-    await connect(mongodbtoken).catch(console.error);
-})();
+
+connect(mongodbtoken, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).catch(console.error);

@@ -1,4 +1,4 @@
-const Guild = require("../../../schemas/guild.js");
+const guilds = require("../../../schemas/guilds.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -6,9 +6,9 @@ module.exports = {
 		.setName('database')
 		.setDescription('Returns information from a databse'),
 	async execute(interaction) {
-		let guildProfile = await Guild.findOne({ guildId: interaction.guild.id });
+		let guildProfile = await guilds.findOne({ guildId: interaction.guild.id });
         if (!guildProfile) {
-            guildProfile = await new Guild({
+            guildProfile = await new guilds({
                 guildId: interaction.guild.id,
                 guildName: interaction.guild.name,
                 guildIcon: interaction.guild.iconURL() ? interaction.guild.iconURL() : "None."

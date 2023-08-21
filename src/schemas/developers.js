@@ -4,4 +4,4 @@ const DeveloperSchema = new Schema({
     permission: String
 }, { versionKey: false });
 
-module.exports = model("developer", DeveloperSchema, "devlist");
+module.exports = model("developers", DeveloperSchema);

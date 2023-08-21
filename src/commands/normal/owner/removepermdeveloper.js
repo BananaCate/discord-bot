@@ -1,4 +1,4 @@
-const Developer = require("../../../schemas/developer.js");
+const developers = require("../../../schemas/developers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser("target");
-		const developerProfile = await Developer.findOne({ userid: target.id });
+		const developerProfile = await developers.findOne({ userid: target.id });
 		if (!developerProfile) {
 			return interaction.reply({
 				content: `${target} already didn't have acces to developer commands.`,
@@ -19,7 +19,7 @@ module.exports = {
 			});
 		}
 
-		await Developer.deleteOne({ userid: target.id });
+		await developers.deleteOne({ userid: target.id });
 		interaction.reply({
 			content: `You removed ${target}'s access from permanent developer commands.`,
 			allowedMentions: { users: [], roles: [], everyone: false }

@@ -5,39 +5,39 @@ const path = require('path');
 const chalk = require('chalk');
 const errorWebhook = new WebhookClient({ url: errorWebhookurl });
 const succesWebhook = new WebhookClient({ url: succesWebhookurl });
-const Block = require("../../schemas/block.js");
-const Developer = require("../../schemas/developer.js");
+const blockedusers = require("../../schemas/blockedusers.js");
+const developers = require("../../schemas/developers.js");
 
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction, client) {
-		const blockprofile = await Block.findOne({ userid: interaction.user.id });
+		const blockprofile = await blockedusers.findOne({ userid: interaction.user.id });
 		if (!blockprofile) {
 			if (interaction.isChatInputCommand()) {
-				const ownProfile = await Developer.findOne({ userid: interaction.user.id });
+				const ownProfile = await developers.findOne({ userid: interaction.user.id });
 				const { commands } = client;
 				const { commandName } = interaction;
 				const commandCategory = findCommandCategory(commandName);
 				const permission = interaction.member.permissions;
 				const flag = PermissionsBitField.Flags;
 
-				if (commandCategory == "owner" && interaction.user.id != "441240050861211648") {
+				if (commandCategory == "owner" && !(interaction.user.id == "441240050861211648")) {
 					return interaction.reply("This is only for Banana Cate.");
 				}
-				else if (commandCategory == "developer" && !ownProfile) {
+				else if (commandCategory == "developer" && !(ownProfile || interaction.user.id == "441240050861211648")) {
 					return interaction.reply("This is only for developers.");
 				}
-				else if (commandCategory == "admin" && !(permission.has(flag.Administrator) ||		ownProfile)) {
+				else if (commandCategory == "admin" && !(permission.has(flag.Administrator) ||		ownProfile || interaction.user.id == "441240050861211648")) {
 					return interaction.reply("This is only for admins.");
 				}
 				else if (commandCategory == "moderation" ) {
-					if(commandName.includes("ban") && !(permission.has(flag.BanMembers) ||		permission.has(flag.Administrator) || ownProfile)) {
+					if(commandName.includes("ban") && !(permission.has(flag.BanMembers) ||		permission.has(flag.Administrator) || ownProfile || interaction.user.id == "441240050861211648")) {
 						return interaction.reply("You need ban permission's");
 					}
 					else if (!(permission.has(flag.KickMembers) || permission.has(flag.ManageChannels) || permission.has(flag.ManageMessages) || 
 							permission.has(flag.ManageNicknames) || permission.has(flag.ManageRoles) || permission.has(flag.ModerateMembers) ||
 
-							permission.has(flag.BanMembers) || permission.has(flag.Administrator) || ownProfile)) {
+							permission.has(flag.BanMembers) || permission.has(flag.Administrator) || ownProfile || interaction.user.id == "441240050861211648")) {
 						return interaction.reply("This is only for moderators.");
 					}
 				}

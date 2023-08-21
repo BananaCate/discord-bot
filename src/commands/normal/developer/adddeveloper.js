@@ -1,5 +1,5 @@
-const Developer = require("../../../schemas/developer.js");
-const Block = require("../../../schemas/block.js");
+const developers = require("../../../schemas/developers.js");
+const blockedusers = require("../../../schemas/blockedusers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,19 +11,19 @@ module.exports = {
 				.setDescription("The person you want to give acces to developer commands")
 				.setRequired(true)),
 	async execute(interaction) {
-		const ownProfile = await Developer.findOne({ userid: interaction.user.id });
+		const ownProfile = await developers.findOne({ userid: interaction.user.id });
 		
 		if (ownProfile.permission != "permanent") {
 			return interaction.reply("You are not a permanent developer, you can't give others developer commands.")
 		}
 
 		const target = interaction.options.getUser("target");
-		const blockprofile = await Block.findOne({ userid: target.id });
+		const blockprofile = await blockedusers.findOne({ userid: target.id });
 		if (blockprofile) {
-			await Block.deleteOne({userid: target.id});
+			await blockedusers.deleteOne({userid: target.id});
 		}
 
-		let developerProfile = await Developer.findOne({ userid: target.id });
+		let developerProfile = await developers.findOne({ userid: target.id });
 		
 		if (developerProfile) {
 			return interaction.reply({
@@ -31,7 +31,7 @@ module.exports = {
                 allowedMentions: { users: [], roles: [], everyone: false }
 			});
 		}
-		developerProfile = await new Developer({
+		developerProfile = await new developers({
 			userid: target.id,
 			permission: "temporary"
 		});

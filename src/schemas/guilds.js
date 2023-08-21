@@ -5,4 +5,4 @@ const guildSchema = new Schema({
     guildIcon: { type: String, required: false }
 }, { versionKey: false });
 
-module.exports = model("guild", guildSchema, "guilds");
+module.exports = model("guilds", guildSchema);

@@ -1,4 +1,4 @@
-const Block = require("../../../schemas/block.js");
+const blockedusers = require("../../../schemas/blockedusers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const target = interaction.options.getUser("target");
-		let blockprofile = await Block.findOne({ userid: target.id });
+		let blockprofile = await blockedusers.findOne({ userid: target.id });
 		if (!blockprofile) {
 			interaction.reply({
 				content: `${target} wasn't blocked from using commands.`,
@@ -19,7 +19,7 @@ module.exports = {
 			})
 		}
 		else {
-			await Block.deleteOne({ userid: target.id });
+			await blockedusers.deleteOne({ userid: target.id });
 			interaction.reply({
 				content: `${target} has been unblocked from using commands.`,
                 allowedMentions: { users: [], roles: [], everyone: false }

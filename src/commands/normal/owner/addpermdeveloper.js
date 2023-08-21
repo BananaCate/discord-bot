@@ -1,4 +1,4 @@
-const Developer = require("../../../schemas/developer.js");
+const developers = require("../../../schemas/developers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,10 +11,10 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
         const target = interaction.options.getUser("target");
-        let developerProfile = await Developer.findOne({ userid: target.id });
+        let developerProfile = await developers.findOne({ userid: target.id });
 
         if (!developerProfile) {
-            developerProfile = await new Developer({
+            developerProfile = await new developers({
                 userid: target.id,
                 permission: "permanent"
             });
