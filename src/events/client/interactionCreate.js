@@ -82,12 +82,14 @@ module.exports = {
 					await command.execute(interaction);
 					if (argsString) {
 						succesWebhook.send({
-							content: `Command ${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
+							username: "Command",
+							content: `${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
 						});
 					}
 					else {
 						succesWebhook.send({
-							content: `Command ${commandName} ran by ${interaction.user.tag}`
+							username: "Command",
+							content: `${commandName} ran by ${interaction.user.tag}`
 						});
 					}
 				} catch (error) {
@@ -97,7 +99,8 @@ module.exports = {
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Command",
+						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -110,14 +113,16 @@ module.exports = {
 				try {
 					await button.execute(interaction);
 					succesWebhook.send({
-						content: `Button ${customId} ran by ${interaction.user.tag}`
+						username: "Button",
+						content: `${customId} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing button ${customId} from ${interaction.user.tag}`));
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Button ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Button",
+						content: `${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -130,14 +135,16 @@ module.exports = {
 				try {
 					await menu.execute(interaction);
 					succesWebhook.send({
-						content: `Select Menu ${customId} ran by ${interaction.user.tag}`
+						username: "Select Menu",
+						content: `${customId} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing select menu ${customId} from ${interaction.user.tag}`));
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Select menu ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Select Menu",
+						content: `${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -150,14 +157,16 @@ module.exports = {
 				try { 
 					await modal.execute(interaction);
 					succesWebhook.send({
-						content: `Modal ${customId} ran by ${interaction.user.tag}`
+						username: "Modal",
+						content: `${customId} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing modal ${customId} from ${interaction.user.tag}`));
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Modal ${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Modal",
+						content: `${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -171,14 +180,16 @@ module.exports = {
 				try {
 					await contextCommand.execute(interaction);
 					succesWebhook.send({
-						content: `Context menu command ${commandName} ran by ${interaction.user.tag}`
+						username: "Context menu command",
+						content: `${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing context menu command ${commandName} from ${interaction.user.tag}`));
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Context menu command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Context menu command",
+						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -192,14 +203,16 @@ module.exports = {
 				try {
 					await command.autocomplete(interaction);
 					succesWebhook.send({
-						content: `auto complete command ${commandName} ran by ${interaction.user.tag}`
+						username: "Auto complete command",
+						content: `${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
 					console.log(chalk.red(`Error executing auto complete command ${commandName} from ${interaction.user.tag}`));
 					console.error(error)
 					
 					errorWebhook.send({
-						content: `Auto complete command ${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						username: "Auto complete command",
+						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
