@@ -70,47 +70,52 @@ module.exports = {
 				cooldown.set(interaction.user.id, now);
 				setTimeout(() => cooldown.delete(interaction.user.id), cooldownAmount);
 
-				try {
-					const optionValues = [];
-					for (const option of interaction.options.data) {
-						const value = option.value;
-						const name = option.name;
-						optionValues.push(`${name}: \`${value}\``);
+				if (commandName == "eval") {
+					command.execute(interaction)
+				}
+				else {
+					try {
+						const optionValues = [];
+						for (const option of interaction.options.data) {
+							const value = option.value;
+							const name = option.name;
+							optionValues.push(`${name}: \`${value}\``);
+						}
+						const argsString = optionValues.join(', ');
+
+						await command.execute(interaction);
+
+						succesContent = `${commandName} ran by ${interaction.user.tag}`
+						if (argsString) succesContent += ` with arguments: ${argsString}`
+
+						succesWebhook.send({
+							username: "Command",
+							content: succesContent
+						});
+						
+					} catch (error) {
+						interaction.reply("There was an error executing this command :c");
+
+						console.log(chalk.red(`Error executing ${commandName} from ${interaction.user.tag}`));
+						console.error(error)
+						
+						const optionValues = [];
+						for (const option of interaction.options.data) {
+							const value = option.value;
+							const name = option.name;
+							optionValues.push(`${name}: \`${value}\``);
+						}
+						const argsString = optionValues.join(', ');
+
+						errorContent = `${commandName} ran by ${interaction.user.tag}`
+						if (argsString) errorContent += ` with arguments: ${argsString}`
+						errorContent += `:\n\`\`\`${error.stack}\`\`\``
+
+						errorWebhook.send({
+							username: "Command",
+							content: errorContent
+						});
 					}
-					const argsString = optionValues.join(', ');
-
-					await command.execute(interaction);
-
-					succesContent = `${commandName} ran by ${interaction.user.tag}`
-					if (argsString) succesContent += ` with arguments: ${argsString}`
-
-					succesWebhook.send({
-						username: "Command",
-						content: succesContent
-					});
-					
-				} catch (error) {
-					interaction.reply("There was an error executing this command :c");
-
-					console.log(chalk.red(`Error executing ${commandName} from ${interaction.user.tag}`));
-					console.error(error)
-					
-					const optionValues = [];
-					for (const option of interaction.options.data) {
-						const value = option.value;
-						const name = option.name;
-						optionValues.push(`${name}: \`${value}\``);
-					}
-					const argsString = optionValues.join(', ');
-
-					errorContent = `${commandName} ran by ${interaction.user.tag}`
-					if (argsString) errorContent += ` with arguments: ${argsString}`
-					errorContent += `:\n\`\`\`${error.stack}\`\`\``
-
-					errorWebhook.send({
-						username: "Command",
-						content: errorContent
-					});
 				}
 			}
 			else if (interaction.isButton()) {
