@@ -80,27 +80,36 @@ module.exports = {
 					const argsString = optionValues.join(', ');
 
 					await command.execute(interaction);
-					if (argsString) {
-						succesWebhook.send({
-							username: "Command",
-							content: `${commandName} ran by ${interaction.user.tag} with arguments: ${argsString}`
-						});
-					}
-					else {
-						succesWebhook.send({
-							username: "Command",
-							content: `${commandName} ran by ${interaction.user.tag}`
-						});
-					}
+
+					succesContent = `${commandName} ran by ${interaction.user.tag}`
+					if (argsString) succesContent += ` with arguments: ${argsString}`
+
+					succesWebhook.send({
+						username: "Command",
+						content: succesContent
+					});
+					
 				} catch (error) {
 					interaction.reply("There was an error executing this command :c");
 
 					console.log(chalk.red(`Error executing ${commandName} from ${interaction.user.tag}`));
 					console.error(error)
 					
+					const optionValues = [];
+					for (const option of interaction.options.data) {
+						const value = option.value;
+						const name = option.name;
+						optionValues.push(`${name}: \`${value}\``);
+					}
+					const argsString = optionValues.join(', ');
+
+					errorContent = `${commandName} ran by ${interaction.user.tag}`
+					if (argsString) errorContent += ` with arguments: ${argsString}`
+					errorContent += `:\n\`\`\`${error.stack}\`\`\``
+
 					errorWebhook.send({
 						username: "Command",
-						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						content: errorContent
 					});
 				}
 			}
@@ -126,7 +135,7 @@ module.exports = {
 					});
 				}
 			}
-			else if (interaction.isSelectMenu()) {
+			else if (interaction.isSelectMenu()) { // ADD WHICH OPTION		 ADD WHICH OPTION		 ADD WHICH OPTION		 ADD WHICH OPTION		 ADD WHICH OPTION		
 				const { selectMenus } = client;
 				const { customId } = interaction;
 				const menu = selectMenus.get(customId);
@@ -148,7 +157,7 @@ module.exports = {
 					});
 				}
 			}
-			else if(interaction.type == InteractionType.ModalSubmit) {
+			else if(interaction.type == InteractionType.ModalSubmit) { // ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		
 				const { modals } = client;
 				const { customId } = interaction;
 				const modal = modals.get(customId);
@@ -193,7 +202,7 @@ module.exports = {
 					});
 				}
 			}
-			else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
+			else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) { // ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS
 				const { commands } = client;
 				const { commandName } = interaction;
 				const command = commands.get(commandName);
