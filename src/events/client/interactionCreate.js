@@ -128,7 +128,7 @@ module.exports = {
 					await button.execute(interaction, data);
 
 					succescontent = `${buttonId} ran by ${interaction.user.tag}`
-					if (data) succescontent += data;
+					if (data) succescontent += ` with data: ${data}`;
 
 					succesWebhook.send({
 						username: "Button",
