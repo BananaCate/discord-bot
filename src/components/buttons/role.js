@@ -23,11 +23,19 @@ module.exports = {
             content = `I removed the color <@&${assignedRoleId}>,`
             await member.roles.remove(assignedRoleId);
         }
-        
-        await member.roles.add(roleIds[roleNames.indexOf(data)]);
-        interaction.reply({
-            content: `${content}\nI gave you the color <@&${roleIds[roleNames.indexOf(data)]}>`,
-            ephemeral: true
-        })
+
+        if (roleIds[roleNames.indexOf(data)] == assignedRoleId) {
+            interaction.reply({
+                content: `I removed the color <@&${assignedRoleId}>`,
+                ephemeral: true
+            })
+        }
+        else {
+            await member.roles.add(roleIds[roleNames.indexOf(data)]);
+            interaction.reply({
+                content: `${content}\nI gave you the color <@&${roleIds[roleNames.indexOf(data)]}>`,
+                ephemeral: true
+            })
+        }
     }
 }
