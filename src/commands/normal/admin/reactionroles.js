@@ -39,4 +39,4 @@ module.exports = {
                          new ActionRowBuilder().addComponents(cyan,blue,purple)]
         });
     }
-}
+};

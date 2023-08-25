@@ -41,7 +41,10 @@ module.exports = {
             }
             
             if (Durationtime > 28*24*60*60*1000) {
-                return interaction.reply({content: "You have chosen a time limit above 28d", ephemeral: true});
+                return interaction.reply({
+                    content: "You have chosen a time limit above 28d", 
+                    ephemeral: true
+                });
             }
             await target.timeout(Durationtime, reason);
             interaction.reply({
@@ -51,5 +54,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to time out members.');
         }
-	},
+	}
 };

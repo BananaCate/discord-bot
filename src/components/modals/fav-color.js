@@ -8,4 +8,4 @@ module.exports = {
             allowedMentions: { users: [], roles: [], everyone: false }
         });
     }
-}
+};

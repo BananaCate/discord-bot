@@ -73,5 +73,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permission to edit a webhook.');
         }
-	},
+	}
 };

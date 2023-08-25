@@ -41,5 +41,5 @@ module.exports = {
 			content: `You gave ${target} access to developer commands.`,
 			allowedMentions: { users: [], roles: [], everyone: false }
 		});
-	},
+	}
 };

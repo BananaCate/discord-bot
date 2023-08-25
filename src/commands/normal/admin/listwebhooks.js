@@ -18,13 +18,9 @@ module.exports = {
             }
             const webhooks = Array.from(webhookcollection.values());
             
-            message = `${channel} has the following webhook(s):\`\`\`\n`;
-            for (i = 0; i < webhooks.length; i++) {
-                message += `${webhooks[i].name}\n`;
-            }
-            interaction.reply(`${message}\`\`\``);
+            interaction.reply(`${channel} has the following webhook(s):\`\`\`\n${webhooks.map(webhook => webhook.name).join("\n")}\`\`\``);
         } else {
             interaction.reply('I do not have permissions to list the webhooks.');
         }
-	},
+	}
 };

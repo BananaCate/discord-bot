@@ -34,10 +34,10 @@ module.exports = (client) => {
 			
 			await rest.put(
 				Routes.applicationCommands("1129723426601447554"),
-				{ body: commands },
-				);
+				{ body: commands }
+			);
 				
-				console.log(`Successfully reloaded ${commands.length} application (/) commands.`);
+			console.log(`Successfully reloaded ${commands.length} application (/) commands.`);
 		} catch (error) {
 			console.error(error);
 		}

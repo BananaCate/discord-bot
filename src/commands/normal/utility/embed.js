@@ -9,12 +9,12 @@ module.exports = {
             .setTitle("this is an embed!")
             .setDescription("this is a very cool description!")
             .setColor(0x00ffbb)
-            .setImage("https://cdn.discordapp.com/avatars/1129723426601447554/3908552166038dbacc3a503517beec13.webp")
+            .setImage("https://cdn.discordapp.com/avatars/697053966415953942/4c021b8a1f532d1c9e49125689e1bc9b.webp")
             .setThumbnail("https://cdn.discordapp.com/avatars/564353701003657216/85ca602f71419bdf04a503ac083a3b3b.webp")
             .setTimestamp(Date.now())
             .setAuthor({
                 url: "https://www.youtube.com/watch?v=j5a0jTc9S10",
-                iconUR: interaction.user.displayAvatarURL(),
+                iconURL: interaction.user.displayAvatarURL(),
                 name: interaction.user.tag
             })
             .setFooter({
@@ -35,6 +35,6 @@ module.exports = {
                 }
             ]);
 
-            await interaction.reply({embeds: [embed]})
-	},
+            interaction.reply({embeds: [embed]})
+	}
 };

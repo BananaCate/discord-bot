@@ -24,16 +24,16 @@ module.exports = {
         try {
             const newCommand = require(commandPath);
             interaction.client.commands.set(newCommand.data.name, newCommand);
-            await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
+            interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
         } catch (error) {
             interaction.reply(`There was an error while reloading command \`${commandName}\`.`);
         }
-    },
+    }
 };
 
 function findCommandPath(commandName) {
     const types = ['normal', 'contextmenu'];
-    const categories = ['owner','admin','developer','fun','moderation','utility'];
+    const categories = ['owner', 'admin', 'developer', 'fun', 'moderation', 'utility'];
     for (const type of types) {
         for (const category of categories) {
             const commandPath = path.join(__dirname, '..', '..', `${type}`, `${category}`, `${commandName}.js`);

@@ -17,7 +17,7 @@ module.exports = {
 		const member = interaction.options.getMember('target');
 		const amount = interaction.options.getInteger('amount') ?? 5;
 		for (let i = 0; i < amount; i++) {
-			await interaction.channel.send(`${member}`);
+			interaction.channel.send(`${member}`);
 		}
-	},
+	}
 };

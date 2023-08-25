@@ -15,9 +15,9 @@ module.exports = {
             }), new SelectMenuOptionBuilder({
                 label: 'Option #2',
                 value: 'https://youtube.com'
-            }))
+            }));
         await interaction.reply({
             components: [new ActionRowBuilder().addComponents(menu)]
-        })
+        });
     }
-}
+};

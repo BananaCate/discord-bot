@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 		const member = interaction.options.getMember('target');
 		interaction.reply({ 
-			content: `You wanted to kick: ${member.user}`, 
+			content: `You wanted to kick: ${member}`, 
 			ephemeral: true 
 		});
 	},

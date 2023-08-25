@@ -13,7 +13,10 @@ module.exports = {
 
 		if (botPermission.has(PermissionsBitField.Flags.ManageMessages) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
 			if (amount < 1 || amount > 99) {
-				return interaction.reply({ content: 'You need to input a number between 1 and 99.', ephemeral: true });
+				return interaction.reply({ 
+					content: 'You need to input a number between 1 and 99.', 
+					ephemeral: true 
+				});
 			}
 			await interaction.channel.bulkDelete(amount, true);
 			
@@ -21,5 +24,5 @@ module.exports = {
 		} else {
             interaction.reply('I do not have permissions to delete messages.');
         }
-	},
+	}
 };

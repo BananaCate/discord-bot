@@ -4,20 +4,20 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('database')
-		.setDescription('Returns information from a databse'),
+		.setDescription('Returns information from a database'),
 	async execute(interaction) {
 		let guildProfile = await guilds.findOne({ guildId: interaction.guild.id });
         if (!guildProfile) {
             guildProfile = await new guilds({
                 guildId: interaction.guild.id,
                 guildName: interaction.guild.name,
-                guildIcon: interaction.guild.iconURL() ? interaction.guild.iconURL() : "None."
+                guildIcon: interaction.guild.iconURL() ?? "None."
             });
         
             await guildProfile.save();
-            await interaction.reply(`Server name: ${guildProfile.guildName}`);
+            interaction.reply(`Server name: ${guildProfile.guildName}`);
         } else {
-            await interaction.reply(`Server id: ${guildProfile.guildId}`);
+            interaction.reply(`Server id: ${guildProfile.guildId}`);
         }
-	},
+	}
 };

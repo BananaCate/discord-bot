@@ -10,16 +10,19 @@ module.exports = {
             .setRequired(true))
         .addStringOption(option =>
             option.setName("prefix")
-            .setDescription("The thing you want before each id"))
+            .setDescription("The thing you want before each id ({SPACE} for a space)"))
         .addStringOption(option =>
             option.setName("suffix")
-            .setDescription("The thing you want behind each id")),
+            .setDescription("The thing you want behind each id ({SPACE} for a space)")),
 	async execute(interaction) {
         splitBefore = interaction.options.getString("prefix") ?? "";
         splitAfter = interaction.options.getString("suffix") ?? "";
 
         splitBefore = splitBefore.replace(/\\n/g, "\n");
-        splitAfter = splitAfter.replace(/\\n/g, "\n");       
+        splitAfter = splitAfter.replace(/\\n/g, "\n");      
+
+        splitBefore = splitBefore.replace(/{SPACE}/g, " ");
+        splitAfter = splitAfter.replace(/{SPACE}/g, " ");       
 
         formatedIds = "";
 
@@ -28,25 +31,26 @@ module.exports = {
         idArray = ids.split("\n");
         ids = ""
         for (i = 0; i < idArray.length; i++) {
-            ids += idArray[i] + " ";
+            ids += `${idArray[i]} `;
         }
 
         idArray2 = ids.split(",")
         ids = ""
         for (i = 0; i < idArray2.length; i++) {
-            ids += idArray2[i] + " ";
+            ids += `${idArray2[i]} `;
         }
 
         idArray3 = ids.split(" ");
 
         for (i = 0; i < idArray3.length; i++) {
             if (idArray3[i] != "") {
-                formatedIds += splitBefore + idArray3[i] + splitAfter;
+                formatedIds += `${splitBefore}${idArray3[i]}${splitAfter}`;
             }
         }
+
         interaction.reply({
-            content: formatedIds,
+            content: `\`\`\`${formatedIds}\`\`\``,
             allowedMentions: { users: [], roles: [], everyone: false }
         });
-	},
+	}
 };

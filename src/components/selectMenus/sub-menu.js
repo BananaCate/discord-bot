@@ -3,8 +3,6 @@ module.exports = {
         name: 'sub-menu'
     },
     async execute(interaction) {
-        await interaction.reply({
-            content: `You selected: ${interaction.values[0]}`
-        });
+        await interaction.reply(`You selected: ${interaction.values[0]}`);
     }
-}
+};

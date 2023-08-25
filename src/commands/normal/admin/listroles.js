@@ -13,10 +13,8 @@ module.exports = {
 
             roleArray.sort((a, b) => b.position - a.position);
 
-            roles = "The roles in this server are:\n";
-            for (i = 0; i < roleArray.length; i++) {
-                roles += `${roleArray[i]}\n`;
-            }
+            roles = `The roles in this server are:\n${roleArray.join("\n")}`;
+            
             interaction.reply({
                 content: roles,
                 allowedMentions: { users: [], roles: [], everyone: false }
@@ -24,5 +22,5 @@ module.exports = {
         } else {
             interaction.reply("I do not have permission to see the roles.")
         }
-    },
+    }
 };

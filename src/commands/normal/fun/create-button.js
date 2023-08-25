@@ -14,4 +14,4 @@ module.exports = {
             components: [new ActionRowBuilder().addComponents(button)]
         });
     }
-}
+};

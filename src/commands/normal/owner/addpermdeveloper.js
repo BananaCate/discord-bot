@@ -1,4 +1,5 @@
 const developers = require("../../../schemas/developers.js");
+const blockedusers = require("../../../schemas/blockedusers.js");
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
@@ -12,6 +13,11 @@ module.exports = {
 	async execute(interaction) {
         const target = interaction.options.getUser("target");
         let developerProfile = await developers.findOne({ userid: target.id });
+		const blockProfile = await blockedusers.findOne({ userid: target.id });
+
+        if (blockProfile) {
+            blockedusers.deleteOne({ userid: target.id });
+        }
 
         if (!developerProfile) {
             developerProfile = await new developers({
@@ -20,24 +26,22 @@ module.exports = {
             });
             
             await developerProfile.save();
-            interaction.reply({
+            return interaction.reply({
                 content: `You gave ${target} access permanently to developer commands.`,
                 allowedMentions: { users: [], roles: [], everyone: false }
             });
         }
-        else {
-            if (developerProfile.permission == "permanent") {
-                return interaction.reply({
-                    content: `${target} already had permanent developer commands.`,
-                    allowedMentions: { users: [], roles: [], everyone: false }
-                });
-            }
-            developerProfile.permission = "permanent";
-            await developerProfile.save();
-            interaction.reply({
-                content: `You gave ${target} acces permantly to developer commands.`,
+        if (developerProfile.permission == "permanent") {
+            return interaction.reply({
+                content: `${target} already had permanent developer commands.`,
                 allowedMentions: { users: [], roles: [], everyone: false }
             });
         }
-	},
+        developerProfile.permission = "permanent";
+        await developerProfile.save();
+        interaction.reply({
+            content: `You gave ${target} acces permantly to developer commands.`,
+            allowedMentions: { users: [], roles: [], everyone: false }
+        });
+	}
 };

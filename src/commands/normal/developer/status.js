@@ -18,5 +18,5 @@ module.exports = {
         const choice = interaction.options.getString('status');
 		interaction.client.user.setPresence({status: choice});
         interaction.reply(`Set my status to ${choice}`);
-	},
+	}
 };

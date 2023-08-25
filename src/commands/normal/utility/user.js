@@ -7,5 +7,5 @@ module.exports = {
 	async execute(interaction) {
 		const joinDate = interaction.member.joinedAt;
 		interaction.reply(`This command was run by ${interaction.user.username}, who joined on ${joinDate.getDate()}/${joinDate.getMonth() + 1}/${joinDate.getFullYear()}`);
-	},
+	}
 };

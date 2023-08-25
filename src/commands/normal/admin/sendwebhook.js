@@ -21,7 +21,7 @@ module.exports = {
             const webhook = webhooks.find(wh => wh.token);
             
             if (!webhook) {
-                return interaction.reply(`No webhook(s) in ${webhookchannel} was/were found that i can use!`);
+                return interaction.reply(`No webhook(s) in ${webhookchannel} were found that i can use!`);
             }
             
             await webhook.send({
@@ -34,5 +34,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to send a message trough a webhook.');
         }
-	},
+	}
 };

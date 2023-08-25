@@ -19,7 +19,7 @@ module.exports = {
 		const developerProfile = await developers.findOne({ userid: target.id });
 		if (!developerProfile) {
 			return interaction.reply({
-				content: `${target} doesn't have acces to developer commands.`,
+				content: `${target} already didn't have acces to developer commands.`,
                 allowedMentions: { users: [], roles: [], everyone: false }
 			});
 		}
@@ -35,5 +35,5 @@ module.exports = {
 			content: `You removed ${target}'s access from developer commands.`,
 			allowedMentions: { users: [], roles: [], everyone: false }
 		});
-	},
+	}
 };

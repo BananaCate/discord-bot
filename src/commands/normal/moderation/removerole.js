@@ -26,5 +26,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to remove roles.');
         }
-	},
+	}
 };

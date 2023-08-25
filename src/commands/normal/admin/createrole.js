@@ -24,5 +24,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to create a role.');
         }
-	},
+	}
 };

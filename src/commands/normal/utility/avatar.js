@@ -13,5 +13,5 @@ module.exports = {
 			content: `${user}'s avatar: ${user.displayAvatarURL({ dynamic: true })}`,
 			allowedMentions: { users: [], roles: [], everyone: false }
 		});
-	},
+	}
 };

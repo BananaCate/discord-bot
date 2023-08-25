@@ -5,6 +5,6 @@ module.exports = {
         .setName('avatar2')
         .setType(ApplicationCommandType.User),
     async execute(interaction) {
-        await interaction.reply(`${interaction.targetUser.displayAvatarURL()}`);
+        await interaction.reply(interaction.targetUser.displayAvatarURL());
     }
 }

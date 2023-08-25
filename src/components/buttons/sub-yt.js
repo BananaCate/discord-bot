@@ -3,8 +3,6 @@ module.exports = {
         name: 'sub-yt'
     },
     async execute(interaction) {
-        await interaction.reply({
-            content: 'https://youtube.com'
-        });
+        await interaction.reply('https://youtube.com');
     }
-}
+};

@@ -2,7 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const { createCanvas, Image } = require('@napi-rs/canvas');
 const { readFile } = require('fs/promises');
 const { request } = require('undici');
-const axios = require('axios');
+const { get } = require('axios');
 
 const applyText = (canvas, text) => {
 	const context = canvas.getContext('2d');
@@ -15,7 +15,6 @@ const applyText = (canvas, text) => {
 
 	return context.font;
 };
-
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -48,7 +47,7 @@ module.exports = {
 		}
 		
 		if (image) {
-			const allowedImageTypes = ['image/png', 'image/jpeg'];
+			const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 			if (!allowedImageTypes.includes(image.contentType)) {
 				return interaction.reply("Unsupported image type. Please upload a valid image file.");
 			}
@@ -61,7 +60,7 @@ module.exports = {
 
 		if (imageurl) {
 			try {
-				const response = await axios.get(imageurl, { responseType: 'arraybuffer' });
+				const response = await get(imageurl, { responseType: 'arraybuffer' });
 				const buffer = Buffer.from(response.data);
 				backgroundImage.src = buffer;
 			} catch (error) {
@@ -71,7 +70,7 @@ module.exports = {
 		} 
 		else if (image) {
 			try {
-				const response = await axios.get(image.url, { responseType: 'arraybuffer' });
+				const response = await get(image.url, { responseType: 'arraybuffer' });
 				const buffer = Buffer.from(response.data);
 				backgroundImage.src = buffer;
 			} catch (error) {
@@ -114,8 +113,8 @@ module.exports = {
 		avatar.src = Buffer.from(await body.arrayBuffer());
 		context.drawImage(avatar, 25, 25, 200, 200);
 
-		const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: 'profile-image.png' });
+		const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${member.displayName}-profile.png` });
 
 		interaction.reply({ files: [attachment] });
-	},
+	}
 };

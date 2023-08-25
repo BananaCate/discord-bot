@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 
 module.exports = (client) => {
-    const { buttons, selectMenus, modals } = client;
+    const { buttons, modals, selectMenus } = client;
     client.handleComponents = async() => {
         const componentFolders = fs.readdirSync("./src/components");
 

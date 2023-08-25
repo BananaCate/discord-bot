@@ -19,9 +19,8 @@ module.exports = {
 					content: `${target} has permanent developer, you can't block them from using commands`,
 					allowedMentions: { users: [], roles: [], everyone: false }
 				});
-			} else {
-				developers.deleteOne({userid: target.id});
 			}
+			developers.deleteOne({userid: target.id});
 		}
 		let blockprofile = await blockedusers.findOne({ userid: target.id });
 		if (blockprofile) {
@@ -40,5 +39,5 @@ module.exports = {
 			content: `You blocked ${target} from using commands.`,
 			allowedMentions: { users: [], roles: [], everyone: false }
 		});
-	},
+	}
 };

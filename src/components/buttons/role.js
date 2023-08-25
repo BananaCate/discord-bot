@@ -8,8 +8,6 @@ module.exports = {
     async execute(interaction, data) {
         const member = interaction.member;
 
-        const hasRole = roleIds.some(roleid => member.roles.cache.find(role => role.id === roleid));
-
         let assignedRoleId = null;
 
         roleIds.some(roleId => {
@@ -20,7 +18,7 @@ module.exports = {
 
         content = ""
         if (assignedRoleId) {
-            content = `I removed the color <@&${assignedRoleId}>,`
+            content = `I removed the color <@&${assignedRoleId}>,`;
             await member.roles.remove(assignedRoleId);
         }
 
@@ -28,14 +26,14 @@ module.exports = {
             interaction.reply({
                 content: `I removed the color <@&${assignedRoleId}>`,
                 ephemeral: true
-            })
+            });
         }
         else {
             await member.roles.add(roleIds[roleNames.indexOf(data)]);
             interaction.reply({
                 content: `${content}\nI gave you the color <@&${roleIds[roleNames.indexOf(data)]}>`,
                 ephemeral: true
-            })
+            });
         }
     }
-}
+};

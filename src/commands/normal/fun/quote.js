@@ -19,14 +19,13 @@ module.exports = {
         const webhookmessage = interaction.options.getString("message");
         
         if (botPermission.has(PermissionsBitField.Flags.ManageWebhooks || botPermission.has(PermissionsBitField.Flags.Administrator))) {
-            webhook = await webhookchannel.createWebhook({
+            const webhook = await webhookchannel.createWebhook({
                 name: member.username,
                 avatar: member.displayAvatarURL({ dynamic: true })
             })
             
             await webhook.send({
                 content: webhookmessage,
-                avatarURL: member.displayAvatarURL({ dynamic: true }),
                 allowedMentions: { users: [], roles: [], everyone: false }
             });
             
@@ -34,5 +33,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to manage webhooks.');
         }
-	},
+	}
 };

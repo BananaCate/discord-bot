@@ -2,7 +2,6 @@ const { Collection, InteractionType, PermissionsBitField, WebhookClient } = requ
 const { succesWebhookurl, errorWebhookurl } = require('../../../config.json');
 const fs = require('fs');
 const path = require('path');
-const chalk = require('chalk');
 const errorWebhook = new WebhookClient({ url: errorWebhookurl });
 const succesWebhook = new WebhookClient({ url: succesWebhookurl });
 const blockedusers = require("../../schemas/blockedusers.js");
@@ -63,7 +62,10 @@ module.exports = {
 					
 					if (now < expirationTime) {
 						const expiredTimestamp = Math.round(expirationTime / 1000);
-						return interaction.reply({ content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`, ephemeral: true });
+						return interaction.reply({ 
+							content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`,
+							ephemeral: true 
+						});
 					}
 				}
 				
@@ -106,11 +108,10 @@ module.exports = {
 
 						errorContent = `${commandName} ran by ${interaction.user.tag}`
 						if (argsString) errorContent += ` with arguments: ${argsString}`
-						errorContent += `:\n\`\`\`${error.stack}\`\`\``
 
 						errorWebhook.send({
 							username: "Command",
-							content: errorContent
+							content: `${errorContent}:\n\`\`\`${error.stack}\`\`\``
 						});
 					}
 				}
@@ -122,7 +123,7 @@ module.exports = {
 				const data = customId.split('_')[1];
 
 				const button = buttons.get(buttonId);
-				if (!button) return console.log('There is no code for this button');
+				if (!button) return console.error('There is no code for this button');
 				
 				try {
 					await button.execute(interaction, data);
@@ -148,7 +149,7 @@ module.exports = {
 				const { selectMenus } = client;
 				const { customId } = interaction;
 				const menu = selectMenus.get(customId);
-				if (!menu) return console.log('There is no code for this select menu');
+				if (!menu) return console.error('There is no code for this select menu');
 
 				try {
 					await menu.execute(interaction);
@@ -167,7 +168,7 @@ module.exports = {
 				const { modals } = client;
 				const { customId } = interaction;
 				const modal = modals.get(customId);
-				if (!modal) return new Error ('There is no code for this modal');
+				if (!modal) return console.error(`No modal matching ${customid} was found.`);
 
 				try { 
 					await modal.execute(interaction);
@@ -187,7 +188,7 @@ module.exports = {
 				const { commandName } = interaction;
 				const contextCommand = commands.get(commandName);
 
-				if (!contextCommand) return;
+				if (!contextCommand) return console.error(`No command matching ${commandName} was found.`);
 				
 				try {
 					await contextCommand.execute(interaction);
@@ -224,14 +225,14 @@ module.exports = {
 			}
 		}
 		else {
-			interaction.reply("You are blocked from using any commands.");
+			interaction.reply("You are blocked from using this bot.");
 		}
-	},
+	}
 };
 
 function findCommandCategory(commandName) {
     const types = ['normal', 'contextmenu'];
-    const categories = ['owner','admin','developer','fun','moderation','utility'];
+    const categories = ['owner', 'developer', 'admin', 'fun', 'moderation', 'utility'];
     for (const type of types) {
         for (const category of categories) {
             const commandPath = path.join(__dirname, '..', '..', 'commands', `${type}`, `${category}`, `${commandName}.js`);

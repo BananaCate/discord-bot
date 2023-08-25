@@ -19,10 +19,17 @@ module.exports = {
 			});
 		}
 
+		if (developerProfile.permission == "permanent") {
+			type = "permanent"
+		}
+		else {
+			type = "temporary"
+		}
+
 		await developers.deleteOne({ userid: target.id });
 		interaction.reply({
-			content: `You removed ${target}'s access from permanent developer commands.`,
+			content: `You removed ${target}'s access from ${type} developer commands.`,
 			allowedMentions: { users: [], roles: [], everyone: false }
 		});
-	},
+	}
 };

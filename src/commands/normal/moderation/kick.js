@@ -16,7 +16,7 @@ module.exports = {
 		const member = interaction.options.getMember('target');
         const reason = interaction.options.getString('reason') ?? 'No reason was given';
 
-        if (botPermission.has(PermissionsBitField.Flags.KickMembers)  ||botPermission.has(PermissionsBitField.Flags.Administrator)) {
+        if (botPermission.has(PermissionsBitField.Flags.KickMembers)  || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             await member.kick(reason);
             interaction.reply({
                 content: `You kicked ${member} for reason: \`${reason}\``,
@@ -25,5 +25,5 @@ module.exports = {
         } else {
             interaction.reply('I do not have permissions to kick members.');
         }
-	},
+	}
 };
