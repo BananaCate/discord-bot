@@ -10,6 +10,9 @@ module.exports = {
             botPermission.has(PermissionsBitField.Flags.Administrator)) {
             const guildRoles = interaction.guild.roles.cache;
             const roleArray = Array.from(guildRoles.values());
+
+            roleArray.sort((a, b) => b.position - a.position);
+
             roles = "The roles in this server are:\n";
             for (i = 0; i < roleArray.length; i++) {
                 roles += `${roleArray[i]}\n`;
