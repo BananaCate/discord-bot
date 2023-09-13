@@ -1,24 +1,21 @@
-const { SlashCommandBuilder } = require('discord.js');
-const axios = require('axios');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('minecraft')
 		.setDescription('Gives some information about a minecraft username')
-        .addStringOption(option => {
-            option.setName("username")
-                .setDescription("The username you want some information about")
-                .setRequired(true)
-        }),
+        .addStringOption(option => 
+			option.setName("username")
+				.setDescription("The username you want some information about")
+                .setRequired(true)),
 	async execute(interaction) {
         const username = interaction.options.getString("username");
-        const response = await axios.get(`https://crafthead.net/avatar/${username}`);
-        const avatarUrl = response.data; // Assuming Crafthead returns the image URL directly
-		const embed = new EmbedBuilder()
+
+        const embed = new EmbedBuilder()
             .setTitle(username)
             .setDescription(`Information about ${username}`)
             .setColor(0x00ffbb)
-            .setThumbnail(avatarUrl)
+            .setThumbnail(`https://crafthead.net/avatar/${username}`)
             .setTimestamp(Date.now())
             .setAuthor({
                 url: interaction.user.displayAvatarURL(),
@@ -46,7 +43,6 @@ module.exports = {
                     value: `https://plancke.io/hypixel/player/stats/${username}`,
                     inline: true
                 },
-                
                 {
                     name: "Laby net",
                     value: `https://laby.net/@${username}`,
@@ -54,6 +50,6 @@ module.exports = {
                 }
             ]);
 
-            interaction.reply({embeds: [embed]})
+        interaction.reply({ embeds: [embed] });
 	}
 };
