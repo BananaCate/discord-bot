@@ -73,6 +73,11 @@ module.exports = {
                         name: "Sky glass",
                         value: `https://skyglass.dev/stats/${username}`,
                         inline: true
+                    },
+                    {
+                        name: "shmeado",
+                        value: `https://www.shmeado.club/player/stats/${username}`,
+                        inline: true
                     }
                 ]);
 
