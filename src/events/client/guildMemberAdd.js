@@ -17,7 +17,7 @@ module.exports = {
             console.log(guild)
             
             if ((String(AmountMembers) > guild.membercount ) && (AmountMembers % 10 == 0)) {
-                const chat = member.guild.channels.cache.get("1114309605971992667");
+                const chat = member.guild.channels.cache.get("1134439155460472843");
                 if (chat) chat.send(`We reached ${AmountMembers} member's!`);
 
                 guild.membercount = String(AmountMembers);
