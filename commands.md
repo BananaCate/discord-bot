@@ -8,9 +8,11 @@ Admin
     editchannel
     deleterole
     edit role
-    permissions importen van tutorial bot
+    permission commands importen van tutorial bot
 
 Fun
-    reaction's importen van tutorial bot
+    reaction commands importen van tutorial bot
 
 https://discordjs.guide/message-components/interactions.html#awaiting-components
+
+hide commands if you're not meant to use them

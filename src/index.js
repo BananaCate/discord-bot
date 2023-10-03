@@ -3,7 +3,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token, mongodbtoken } = require('../config.json');
 const { connect } = require('mongoose');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 
 client.commands = new Collection();
 client.buttons = new Collection();
