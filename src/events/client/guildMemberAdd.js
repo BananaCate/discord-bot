@@ -14,14 +14,15 @@ module.exports = {
                 
                 return await guild.save();
             }
-            console.log(guild)
-            
-            if ((String(AmountMembers) > guild.membercount ) && (AmountMembers % 10 == 0)) {
-                const chat = member.guild.channels.cache.get("1134439155460472843");
-                if (chat) chat.send(`We reached ${AmountMembers} member's!`);
 
-                guild.membercount = String(AmountMembers);
-                return await guild.save();
+            if (String(AmountMembers) > guild.membercount) {
+                if (AmountMembers % 10 == 0 || AmountMembers - 10 > Number(guild.membercount)) {
+                    const chat = member.guild.channels.cache.get("1134439155460472843");
+                    if (chat) chat.send(`We reached ${AmountMembers} member's!`);
+                    
+                    guild.membercount = String(AmountMembers);
+                    return await guild.save();
+                }
             }
         }
 	},

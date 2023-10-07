@@ -9,10 +9,12 @@ Admin
     deleterole
     edit role
     permission commands importen van tutorial bot
+    sendwebhook  url option
 
 Fun
     reaction commands importen van tutorial bot
 
-https://discordjs.guide/message-components/interactions.html#awaiting-components
+Developer
+    pinger role option
 
 hide commands if you're not meant to use them
