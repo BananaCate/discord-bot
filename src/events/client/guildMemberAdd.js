@@ -7,13 +7,6 @@ module.exports = {
         if (member.guild.id == "1041020827619049592") {
             guild = await members.findOne({});
             const AmountMembers = member.guild.memberCount;
-            if (!guild) {
-                guild = await new members({
-                    membercount: AmountMembers
-                });
-                
-                return await guild.save();
-            }
 
             if (AmountMembers > Number(guild.membercount)) {
                 const chat = member.guild.channels.cache.get("1134439155460472843");
