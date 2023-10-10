@@ -22,7 +22,7 @@ module.exports = {
                     if (chat) chat.send(`@everyone big milestone! ${AmountMembers} members!!!`);
                 }
 
-                if (AmountMembers % 10 == 0) {
+                else if (AmountMembers % 10 == 0) {
                     if (chat) chat.send(`We reached ${AmountMembers} member's!`);
                 }
                 guild.membercount = String(AmountMembers);
