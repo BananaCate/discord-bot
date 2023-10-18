@@ -4,12 +4,12 @@ module.exports = {
 	name: 'guildMemberAdd',
 	once: true,
 	async execute(member) {
-        if (member.guild.id == "1041020827619049592") {
+        if (await member.guild.id == "1041020827619049592") {
             guild = await members.findOne({});
-            const AmountMembers = member.guild.memberCount;
+            const AmountMembers = await member.guild.memberCount;
 
             if (AmountMembers > Number(guild.membercount)) {
-                const chat = member.guild.channels.cache.get("1134439155460472843");
+                const chat = await member.guild.channels.cache.get("1134439155460472843");
                 
                 if (AmountMembers % 100 == 0) {
                     if (chat) chat.send(`@everyone big milestone! ${AmountMembers} members!!!`);
