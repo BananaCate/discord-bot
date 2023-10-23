@@ -56,7 +56,7 @@ module.exports = {
                     ephemeral: true
                 });
             }
-            //await target.timeout(Durationtime, reason);
+            await target.timeout(Durationtime, reason);
             interaction.reply({
                 content: `${target} has been muted for ${timeOption} for: \`${reason}\`.`,
                 allowedMentions: { users: [], roles: [], everyone: false }
