@@ -2,6 +2,8 @@ Moderating
     deafen/mute   https://old.discordjs.dev/#/docs/discord.js/14.11.0/typedef/GuildMemberEditOptions, https://old.discordjs.dev/#/docs/discord.js/14.11.0/class/GuildMember?scrollTo=edit
     change nicknames
 
+    FIX ADDING ROLES HIGHER THAN YOUR OWN/ REMOVING
+
 Admin
     createchannel
     deletechannel

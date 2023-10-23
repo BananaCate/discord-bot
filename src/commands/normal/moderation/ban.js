@@ -17,6 +17,13 @@ module.exports = {
         const reason = interaction.options.getString('reason') ?? 'No reason was given';
 
         if (botPermission.has(PermissionsBitField.Flags.BanMembers || botPermission.has(PermissionsBitField.Flags.Administrator))) {
+            if (member.roles.highest.position >= interaction.member.roles.highest.position) {
+                return interaction.reply("You can't ban someone higher/equal than your highest role.");
+            }
+            if (member.roles.highest.position >= interaction.guild.members.cache.get(interaction.client.user.id).roles.highest.position) {
+                return interaction.reply("I can't ban someone higher/equal than my highest role.");
+            }
+
             await interaction.guild.members.ban(member, { reason: reason });
             interaction.reply({
                 content: `You banned ${member} for reason: \`${reason}\``,

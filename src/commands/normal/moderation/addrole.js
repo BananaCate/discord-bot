@@ -16,7 +16,14 @@ module.exports = {
         const botPermission = interaction.guild.members.cache.get(interaction.client.user.id).permissionsIn(interaction.channel);
 		const member = interaction.options.getMember('target');
         const role = interaction.options.getRole('role');
-        if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {    
+
+        if (botPermission.has(PermissionsBitField.Flags.ManageRoles) || botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            if (role.position >= interaction.member.roles.highest.position) {
+                return interaction.reply("You can't give a role higher/equal to your highest role.");
+            }
+            if (role.position >= interaction.guild.members.cache.get(interaction.client.user.id).roles.highest.position) {
+                return interaction.reply("This role is higher/equal than my highest role.");
+            }
             await member.roles.add(role);
             interaction.reply({
                 content: `You added the role ${role} to: ${member}`,

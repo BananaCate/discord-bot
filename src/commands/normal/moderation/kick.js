@@ -17,6 +17,13 @@ module.exports = {
         const reason = interaction.options.getString('reason') ?? 'No reason was given';
 
         if (botPermission.has(PermissionsBitField.Flags.KickMembers)  || botPermission.has(PermissionsBitField.Flags.Administrator)) {
+            if (member.roles.highest.position >= interaction.member.roles.highest.position) {
+                return interaction.reply("You can't kick someone higher than yourselves.");
+            }
+            if (member.roles.highest.position >= interaction.guild.members.cache.get(interaction.client.user.id).roles.highest.position) {
+                return interaction.reply("I can't kick someone higher than myself.");
+            }
+
             await member.kick(reason);
             interaction.reply({
                 content: `You kicked ${member} for reason: \`${reason}\``,
