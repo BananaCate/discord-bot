@@ -18,10 +18,10 @@ module.exports = {
 
         if (botPermission.has(PermissionsBitField.Flags.KickMembers)  || botPermission.has(PermissionsBitField.Flags.Administrator)) {
             if (member.roles.highest.position >= interaction.member.roles.highest.position) {
-                return interaction.reply("You can't kick someone higher than yourselves.");
+                return interaction.reply("You can't kick someone higher/equal than yourselves.");
             }
             if (member.roles.highest.position >= interaction.guild.members.cache.get(interaction.client.user.id).roles.highest.position) {
-                return interaction.reply("I can't kick someone higher than myself.");
+                return interaction.reply("I can't kick someone higher/equal than myself.");
             }
 
             await member.kick(reason);
