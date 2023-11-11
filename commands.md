@@ -15,6 +15,7 @@ Admin
 
 Fun
     reaction commands importen van tutorial bot
+    count channel
 
 Developer
     pinger role option

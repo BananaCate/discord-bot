@@ -97,7 +97,9 @@ module.exports = {
 						
 					} catch (error) {
 						interaction.reply("There was an error executing this command :c");
-						
+						console.log(error);
+
+
 						const optionValues = [];
 						for (const option of interaction.options.data) {
 							const value = option.value;
@@ -136,6 +138,8 @@ module.exports = {
 						content:  succescontent
 					})
 				} catch (error) {
+					console.log(error);
+
 					errorcontent = `${buttonId} ran by ${interaction.user.tag}`
 					if (data) errorcontent += ` with data: ${data}`;
 					
@@ -157,7 +161,9 @@ module.exports = {
 						username: "Select Menu",
 						content: `${customId} ran by ${interaction.user.tag}`
 					})
-				} catch (error) {					
+				} catch (error) {			
+					console.log(error);
+
 					errorWebhook.send({
 						username: "Select Menu",
 						content: `${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
@@ -167,19 +173,31 @@ module.exports = {
 			else if(interaction.type == InteractionType.ModalSubmit) { // ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		 ADD ARGUMENTS		
 				const { modals } = client;
 				const { customId } = interaction;
-				const modal = modals.get(customId);
+				const modalId = customId.split('_')[0];
+				const data = customId.split('_')[1];
+
+				const modal = modals.get(modalId);
 				if (!modal) return console.error(`No modal matching ${customid} was found.`);
 
 				try { 
-					await modal.execute(interaction);
+					await modal.execute(interaction, data);
+					
+					succescontent = `${modalId} ran by ${interaction.user.tag}`
+					if (data) succescontent += ` with data: ${data}`;
+					
 					succesWebhook.send({
 						username: "Modal",
-						content: `${customId} ran by ${interaction.user.tag}`
+						content: succescontent
 					})
 				} catch (error) {
+					console.log(error);
+					
+					errorcontent = `${modalId} ran by ${interaction.user.tag}`
+					if (data) errorcontent += ` with data: ${data}`;
+
 					errorWebhook.send({
 						username: "Modal",
-						content: `${customId} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
+						content: `${errorcontent}:\n\`\`\`${error.stack}\`\`\``
 					});
 				}
 			}
@@ -197,6 +215,8 @@ module.exports = {
 						content: `${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
+					console.log(error);
+
 					errorWebhook.send({
 						username: "Context menu command",
 						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
@@ -217,6 +237,8 @@ module.exports = {
 						content: `${commandName} ran by ${interaction.user.tag}`
 					})
 				} catch (error) {
+					console.log(error);
+					
 					errorWebhook.send({
 						username: "Auto complete command",
 						content: `${commandName} ran by ${interaction.user.tag}:\n\`\`\`${error.stack}\`\`\``
