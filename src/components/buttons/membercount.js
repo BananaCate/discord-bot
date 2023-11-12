@@ -9,7 +9,6 @@ module.exports = {
         page = data[0];
 		currentServer = await servers.findOne({ serverid: interaction.guild.id });
 
-//.setDisabled(true)
         const leftbutton = new ButtonBuilder()
                                 .setCustomId(`membercount_${page}left`)
                                 .setStyle(ButtonStyle.Secondary)
@@ -24,7 +23,7 @@ module.exports = {
                                 .setEmoji('➡️')
 
         const addbutton = new ButtonBuilder()
-                                .setCustomId('membercount_add')
+                                .setCustomId(`membercount_${page}add`)
                                 .setStyle(ButtonStyle.Primary)
                                 .setEmoji('➕')
         const removebutton = new ButtonBuilder()
@@ -33,12 +32,12 @@ module.exports = {
                                 .setEmoji('🗑️')
 
         embedData = "";
-        
         const type = data.substring(1,7);
 
         if (interaction.user.id != interaction.message.interaction.user.id) {
             return interaction.reply({ephemeral: true, content: "This is not your button 😡"});
         }
+
         if (type == "add" || type == "edit") {
             const modal = new ModalBuilder()
                 .setCustomId(`membercount_${data}`)
@@ -75,56 +74,41 @@ module.exports = {
             };
 
             interaction.awaitModalSubmit({ time: 60000, filter: collectorFilter }).then(() => {
-                let counter = 0;
-            
-                let intervalId = setInterval(function() {
-                    embedData = currentServer.messages[Number(page) - 1];
-                    resendmessage();
-            
-                    counter += 1;
-            
-                    if (counter >= 5) {
-                        clearInterval(intervalId);
-                    }
-                }, 250);
+                updatedata()
             }).catch(error => {});
         }
-        else if (type == "left") {
-            if (page == 1) {
-                return interaction.reply({
-                    content: "You can not go further left",
-                    ephemeral: true
-                })
-            }            
+        else if (type == "left") {          
             page = Number(page) - 1
-
-            leftbutton.setCustomId(`membercount_${page}left`)
-            editbutton.setCustomId(`membercount_${page}edit`)
-            rightbutton.setCustomId(`membercount_${page}right`)
-            addbutton.setCustomId(`membercount_${page}add`)
-            removebutton.setCustomId(`membercount_${page}remove`)
-
-            let counter = 0;
-        
-            let intervalId = setInterval(function() {
-                embedData = currentServer.messages[page]
-                resendmessage();
-        
-                counter += 1;
-        
-                if (counter >= 5) {
-                    clearInterval(intervalId);
-                }
-            }, 250);
+            move()
         }
         else if (type == "right") {
-            if (page == currentServer.messages.length) {
-                return interaction.reply({
-                    content: "You can not go anymore right",
-                    ephemeral: true
+            page = Number(page) + 1
+            move()
+        }
+        else if (type == "remove") { 
+            if (currentServer.messages.splice(Number(page)-1,1).length == 0) {
+                await interaction.deferUpdate();
+                await currentServer.save();
+                return interaction.message.edit({
+                    content: "You do not have any preset messages yet. Would you like to make one?",
+                    components: [new ActionRowBuilder().addComponents(new ButtonBuilder()
+                    .setCustomId('membercount_1add')
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji('✅'))],
+                    embeds: []
                 })
             }
-            page = Number(page) + 1
+            await interaction.deferUpdate();
+            await currentServer.save();
+            if (Number(page) > currentServer.messages.length) {
+                page = Number(page)-1
+            }
+
+            updatedata()
+        }
+
+        async function move() {
+            await interaction.deferUpdate();
 
             leftbutton.setCustomId(`membercount_${page}left`)
             editbutton.setCustomId(`membercount_${page}edit`)
@@ -132,46 +116,33 @@ module.exports = {
             addbutton.setCustomId(`membercount_${page}add`)
             removebutton.setCustomId(`membercount_${page}remove`)
 
-
-            let counter = 0;
-        
-            let intervalId = setInterval(function() {
-                embedData = currentServer.messages[Number(page)-1]
-                resendmessage();
-        
-                counter += 1;
-        
-                if (counter >= 5) {
-                    clearInterval(intervalId);
-                }
-            }, 250);
+            updatedata()
         }
-        else if (type == "remove") {           
-            currentServer.messages.splice(page,1)
-            
-            let counter = 0;
-        
-            let intervalId = setInterval(function() {
-                embedData = currentServer.messages[Number(page)-1]
+
+        function updatedata() {
+            setTimeout(async function() {
+                currentServer = await servers.findOne({ serverid: interaction.guild.id });
+                
+                embedData = currentServer.messages[Number(page) - 1];
                 resendmessage();
-        
-                counter += 1;
-        
-                if (counter >= 5) {
-                    clearInterval(intervalId);
-                }
-            }, 250);
-            await currentServer.save();
+            }, 125);
         }
 
         function resendmessage() {
+            if (Number(page) == 1) {
+                leftbutton.setDisabled(true)
+            }
+            if (Number(page) == currentServer.messages.length) {
+                rightbutton.setDisabled(true)
+            }
+
             const embed = new EmbedBuilder()
             .setTitle('Member notifier')
             .setDescription(`Automated notifiers per member count. (${page}/${currentServer.messages.length})`)
             .addFields([
                 {
-                    name: "Amount",
-                    value: embedData["amount"],
+                    name: "Per",
+                    value: `${embedData["amount"]} members`,
                     inline: true
                 },
                 {

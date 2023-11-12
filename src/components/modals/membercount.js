@@ -1,4 +1,3 @@
-const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const servers = require("../../schemas/membercounts.js");
 
 module.exports = {
@@ -16,18 +15,18 @@ module.exports = {
         const Targetchannel = interaction.client.channels.cache.get(channel);
         if (!Targetchannel) {
             return interaction.reply({
-                        content:`I do not have acces to <#${interaction.fields.getTextInputValue("channel")}>, also meaning i won't be able to send messages there. Pick a diffrent chanel or change my permissions.`,
-                        allowedMentions: { users: [], roles: [], everyone: false },
-                        ephemeral: true
-                    });
+                content:`I do not have acces to <#${interaction.fields.getTextInputValue("channel")}>, also meaning i won't be able to send messages there. Pick a diffrent chanel or change my permissions.`,
+                allowedMentions: { users: [], roles: [], everyone: false },
+                ephemeral: true
+            });
         }
 
         if (isNaN(amount)) {
             return interaction.reply({
-                        content: (`${amount} is not a valid number i can work with. Please pick an natural number.`),
-                        allowedMentions: { users: [], roles: [], everyone: false },
-                        ephemeral: true
-                    })
+                content: (`${amount} is not a valid number i can work with. Please pick an natural number.`),
+                allowedMentions: { users: [], roles: [], everyone: false },
+                ephemeral: true
+            })
         }
         
 		currentServer = await servers.findOne({ serverid: interaction.guild.id });

@@ -7,13 +7,13 @@ module.exports = {
 		.setDescription('Sets up custom messages in specific channels after reaching a set amount of members.'),
 	async execute(interaction) {
 		currentServer = await servers.findOne({ serverid: interaction.guild.id });
-        if (!currentServer) {
+        if (!currentServer || currentServer.messages.length == 0) {
             interaction.reply({
                 content: "You do not have any preset messages yet. Would you like to make one?",
                 components: [new ActionRowBuilder().addComponents(new ButtonBuilder()
-                .setCustomId('membercount_1add')
-                .setStyle(ButtonStyle.Primary)
-                .setEmoji('✅'))]
+                    .setCustomId('membercount_1add')
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji('✅'))]
             })
         }
         else {
@@ -21,6 +21,7 @@ module.exports = {
                                 .setCustomId('membercount_1left')
                                 .setStyle(ButtonStyle.Secondary)
                                 .setEmoji('⬅️')
+                                .setDisabled(true)
             const editbutton = new ButtonBuilder()
                                 .setCustomId('membercount_1edit')
                                 .setStyle(ButtonStyle.Primary)
@@ -41,6 +42,9 @@ module.exports = {
 
             const embedData = currentServer.messages[0]
 
+            if (1 == currentServer.messages.length) {
+                rightbutton.setDisabled(true);
+            }
             const embed = new EmbedBuilder()
                             .setTitle('Member notifier')
                             .setDescription(`Automated notifiers per member count. (1/${currentServer.messages.length})`)
